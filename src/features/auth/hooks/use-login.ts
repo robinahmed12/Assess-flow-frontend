@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ofetch } from "ofetch";
-import { AUTH_QUERY_KEYS, type AuthUser, type LoginRequestDto } from "../../types";
+import { AUTH_QUERY_KEYS, type AuthUser, type LoginRequestDto } from "../types";
 
 type LoginSessionResponse = {
   user: AuthUser;
