@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { AppProvider } from "@/src/shared/presentation/providers/app-provider";
+import { AppProvider } from "@/src/shared/components/providers/app-provider";
 
 export const metadata: Metadata = {
   title: "Your App",

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { authRepository } from "@/src/features/auth/infrastructure";
-import { loginSchema } from "@/src/features/auth/domain";
-import { AUTH_ACCESS_TOKEN_COOKIE, getAuthCookieOptions } from "@/src/shared/infrastructure/auth";
+import { authRepository } from "@/src/features/auth/api";
+import { loginSchema } from "@/src/features/auth/schemas";
+import { AUTH_ACCESS_TOKEN_COOKIE, getAuthCookieOptions } from "@/src/shared/lib/auth";
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
