@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ROUTES } from "@/src/config/routes";
 import { LoginForm } from "./login-form";
 
 export function LoginPage() {
@@ -9,6 +11,9 @@ export function LoginPage() {
           <p className="text-sm text-gray-600">Use your registered email and password to continue.</p>
         </div>
         <LoginForm />
+        <p className="mt-4 text-center text-sm text-gray-600">
+          New here? <Link className="font-medium text-black underline" href={ROUTES.register}>Create an account</Link>
+        </p>
       </section>
     </main>
   );
