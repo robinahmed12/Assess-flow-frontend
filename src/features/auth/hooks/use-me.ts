@@ -2,12 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { AUTH_QUERY_KEYS } from "../types";
-import { authClientApi } from "../api";
+import { authApi } from "../api/auth.api";
 
 export function useMe() {
   return useQuery({
     queryKey: AUTH_QUERY_KEYS.me,
-    queryFn: authClientApi.me,
+    queryFn: authApi.me,
     retry: false,
   });
 }
