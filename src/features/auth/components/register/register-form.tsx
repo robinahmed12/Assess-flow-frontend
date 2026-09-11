@@ -2,11 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 
 import { ROUTES } from "@/src/config/routes";
+import { cn } from "@/src/shared/utils";
+import { Button } from "@/src/shared/components/ui/button";
+import { Input } from "@/src/shared/components/ui/input";
+import { Label } from "@/src/shared/components/ui/label";
+import { Alert, AlertDescription } from "@/src/shared/components/ui/alert";
+
 import { candidateRegisterSchema, otpSchema } from "../../schemas";
 import type { RegisterCandidateRequestDto, VerifyRegistrationOtpRequestDto } from "../../types";
 import { useRegisterCandidate, useVerifyRegistrationOtp } from "../../hooks";
@@ -14,6 +19,56 @@ import { useRegisterCandidate, useVerifyRegistrationOtp } from "../../hooks";
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
   return "Something went wrong. Please try again.";
+}
+
+function AlertIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="size-4">
+      <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M10 6v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="10" cy="13.5" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="size-4 text-muted-foreground">
+      <rect x="3" y="5" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M3.5 5.5L10 11l6.5-5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Two dots showing which stage of registration the person is on. */
+function StepTracker({ step }: { step: 1 | 2 }) {
+  return (
+    <div className="mb-5 flex items-center gap-2">
+      {[1, 2].map((s) => (
+        <div key={s} className="flex flex-1 items-center gap-2">
+          <span
+            className={cn(
+              "flex size-5 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
+              step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+            )}
+          >
+            {s}
+          </span>
+          <span
+            className={cn(
+              "text-[11px] font-medium",
+              step >= s ? "text-foreground" : "text-muted-foreground",
+            )}
+          >
+            {s === 1 ? "Your details" : "Verify email"}
+          </span>
+          {s === 1 ? (
+            <span className={cn("h-px flex-1", step >= 2 ? "bg-primary" : "bg-border")} />
+          ) : null}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export function RegisterForm() {
@@ -50,178 +105,194 @@ export function RegisterForm() {
 
   if (registeredEmail) {
     return (
+      <div>
+        <StepTracker step={2} />
+
+        <form
+          className="space-y-4"
+          onSubmit={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            void otpForm.handleSubmit();
+          }}
+        >
+          <div className="flex items-start gap-2.5 border border-primary/20 bg-primary/5 px-3 py-2.5 text-xs text-foreground">
+            <MailIcon />
+            <p>
+              We sent a 6-digit code to <span className="font-medium">{registeredEmail}</span>. Enter it below to
+              activate your account.
+            </p>
+          </div>
+
+          <otpForm.Field
+            name="otp"
+            validators={{
+              onBlur: ({ value }) => {
+                const result = z.string().regex(/^\d{6}$/, "OTP must be exactly 6 digits").safeParse(value);
+                return result.success ? undefined : result.error.issues[0]?.message;
+              },
+            }}
+          >
+            {(field) => (
+              <div className="space-y-1.5">
+                <Label htmlFor={field.name}>Verification code</Label>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="••••••"
+                  maxLength={6}
+                  className="h-11 text-center text-base tracking-[0.5em]"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                />
+                {field.state.meta.errors.length > 0 ? (
+                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                ) : null}
+              </div>
+            )}
+          </otpForm.Field>
+
+          {verifyOtpMutation.isError ? (
+            <Alert variant="destructive">
+              <AlertIcon />
+              <AlertDescription>{getErrorMessage(verifyOtpMutation.error)}</AlertDescription>
+            </Alert>
+          ) : null}
+
+          <Button type="submit" disabled={verifyOtpMutation.isPending} className="h-10 w-full">
+            {verifyOtpMutation.isPending ? "Verifying..." : "Verify account"}
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="h-10 w-full"
+            onClick={() => setRegisteredEmail("")}
+          >
+            Use a different email
+          </Button>
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <StepTracker step={1} />
+
       <form
         className="space-y-4"
         onSubmit={(event) => {
           event.preventDefault();
           event.stopPropagation();
-          void otpForm.handleSubmit();
+          void registerForm.handleSubmit();
         }}
       >
-        <div className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-700">
-          Registration started. Enter the 6 digit OTP sent to {registeredEmail}.
-        </div>
-
-        <otpForm.Field
-          name="otp"
+        <registerForm.Field
+          name="name"
           validators={{
             onBlur: ({ value }) => {
-              const result = z.string().regex(/^\d{6}$/, "OTP must be exactly 6 digits").safeParse(value);
+              const result = candidateRegisterSchema.shape.name.safeParse(value);
               return result.success ? undefined : result.error.issues[0]?.message;
             },
           }}
         >
           {(field) => (
-            <div className="space-y-2">
-              <label className="text-sm font-medium" htmlFor={field.name}>OTP</label>
-              <input
+            <div className="space-y-1.5">
+              <Label htmlFor={field.name}>Full name</Label>
+              <Input
                 id={field.name}
                 name={field.name}
                 type="text"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                className="w-full rounded-md border px-3 py-2 text-sm"
+                autoComplete="name"
+                placeholder="Jordan Rivera"
+                className="h-10"
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(event) => field.handleChange(event.target.value)}
               />
-              {field.state.meta.errors.length > 0 ? <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p> : null}
+              {field.state.meta.errors.length > 0 ? (
+                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+              ) : null}
             </div>
           )}
-        </otpForm.Field>
+        </registerForm.Field>
 
-        {verifyOtpMutation.isError ? (
-          <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">
-            {getErrorMessage(verifyOtpMutation.error)}
-          </div>
+        <registerForm.Field
+          name="email"
+          validators={{
+            onBlur: ({ value }) => {
+              const result = candidateRegisterSchema.shape.email.safeParse(value);
+              return result.success ? undefined : result.error.issues[0]?.message;
+            },
+          }}
+        >
+          {(field) => (
+            <div className="space-y-1.5">
+              <Label htmlFor={field.name}>Email</Label>
+              <Input
+                id={field.name}
+                name={field.name}
+                type="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+                className="h-10"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(event) => field.handleChange(event.target.value)}
+              />
+              {field.state.meta.errors.length > 0 ? (
+                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+              ) : null}
+            </div>
+          )}
+        </registerForm.Field>
+
+        <registerForm.Field
+          name="password"
+          validators={{
+            onBlur: ({ value }) => {
+              const result = candidateRegisterSchema.shape.password.safeParse(value);
+              return result.success ? undefined : result.error.issues[0]?.message;
+            },
+          }}
+        >
+          {(field) => (
+            <div className="space-y-1.5">
+              <Label htmlFor={field.name}>Password</Label>
+              <Input
+                id={field.name}
+                name={field.name}
+                type="password"
+                autoComplete="new-password"
+                placeholder="At least 8 characters"
+                className="h-10"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(event) => field.handleChange(event.target.value)}
+              />
+              {field.state.meta.errors.length > 0 ? (
+                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+              ) : null}
+            </div>
+          )}
+        </registerForm.Field>
+
+        {registerMutation.isError ? (
+          <Alert variant="destructive">
+            <AlertIcon />
+            <AlertDescription>{getErrorMessage(registerMutation.error)}</AlertDescription>
+          </Alert>
         ) : null}
 
-        <button
-          type="submit"
-          disabled={verifyOtpMutation.isPending}
-          className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {verifyOtpMutation.isPending ? "Verifying..." : "Verify account"}
-        </button>
-
-        <button
-          type="button"
-          className="w-full rounded-md border px-4 py-2 text-sm font-medium"
-          onClick={() => setRegisteredEmail("")}
-        >
-          Use another email
-        </button>
+        <Button type="submit" disabled={registerMutation.isPending} className="h-10 w-full">
+          {registerMutation.isPending ? "Creating account..." : "Create account"}
+        </Button>
       </form>
-    );
-  }
-
-  return (
-    <form
-      className="space-y-4"
-      onSubmit={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        void registerForm.handleSubmit();
-      }}
-    >
-      <registerForm.Field
-        name="name"
-        validators={{
-          onBlur: ({ value }) => {
-            const result = candidateRegisterSchema.shape.name.safeParse(value);
-            return result.success ? undefined : result.error.issues[0]?.message;
-          },
-        }}
-      >
-        {(field) => (
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor={field.name}>Name</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="text"
-              autoComplete="name"
-              className="w-full rounded-md border px-3 py-2 text-sm"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(event) => field.handleChange(event.target.value)}
-            />
-            {field.state.meta.errors.length > 0 ? <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p> : null}
-          </div>
-        )}
-      </registerForm.Field>
-
-      <registerForm.Field
-        name="email"
-        validators={{
-          onBlur: ({ value }) => {
-            const result = candidateRegisterSchema.shape.email.safeParse(value);
-            return result.success ? undefined : result.error.issues[0]?.message;
-          },
-        }}
-      >
-        {(field) => (
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor={field.name}>Email</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="email"
-              autoComplete="email"
-              className="w-full rounded-md border px-3 py-2 text-sm"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(event) => field.handleChange(event.target.value)}
-            />
-            {field.state.meta.errors.length > 0 ? <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p> : null}
-          </div>
-        )}
-      </registerForm.Field>
-
-      <registerForm.Field
-        name="password"
-        validators={{
-          onBlur: ({ value }) => {
-            const result = candidateRegisterSchema.shape.password.safeParse(value);
-            return result.success ? undefined : result.error.issues[0]?.message;
-          },
-        }}
-      >
-        {(field) => (
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor={field.name}>Password</label>
-            <input
-              id={field.name}
-              name={field.name}
-              type="password"
-              autoComplete="new-password"
-              className="w-full rounded-md border px-3 py-2 text-sm"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(event) => field.handleChange(event.target.value)}
-            />
-            {field.state.meta.errors.length > 0 ? <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p> : null}
-          </div>
-        )}
-      </registerForm.Field>
-
-      {registerMutation.isError ? (
-        <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">
-          {getErrorMessage(registerMutation.error)}
-        </div>
-      ) : null}
-
-      <button
-        type="submit"
-        disabled={registerMutation.isPending}
-        className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {registerMutation.isPending ? "Creating account..." : "Create account"}
-      </button>
-
-      <p className="text-center text-sm text-gray-600">
-        Already have an account? <Link className="font-medium text-black underline" href={ROUTES.login}>Sign in</Link>
-      </p>
-    </form>
+    </div>
   );
 }

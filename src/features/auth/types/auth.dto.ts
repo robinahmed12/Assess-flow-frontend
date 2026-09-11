@@ -20,6 +20,20 @@ export type VerifyRegistrationOtpRequestDto = {
   otp: string;
 };
 
+export type RegisterRecruiterRequestDto = {
+  name: string;
+  email: string;
+  password: string;
+  companyName: string;
+  companyLicensePaper: File;
+  selfDocument: File;
+};
+
+export type VerifyRecruiterOtpRequestDto = {
+  email: string;
+  otp: string;
+};
+
 export type ForgotPasswordRequestDto = {
   email: string;
 };
@@ -39,6 +53,8 @@ export type LoginResponseDto = LoginResult;
 export type GoogleLoginResponseDto = LoginResult;
 export type RegisterCandidateResponseDto = { message?: string };
 export type VerifyRegistrationOtpResponseDto = RegisterVerificationResult;
+export type RegisterRecruiterResponseDto = { message?: string };
+export type VerifyRecruiterOtpResponseDto = RegisterVerificationResult;
 export type ForgotPasswordResponseDto = { message?: string };
 export type VerifyForgotPasswordOtpResponseDto = ForgotPasswordOtpVerificationResult;
 export type ResetPasswordResponseDto = { message?: string };

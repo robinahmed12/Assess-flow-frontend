@@ -33,6 +33,20 @@ export const candidateRegisterSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters").max(100),
 });
 
+const pdfFileSchema = z
+  .instanceof(File, { message: "This document is required" })
+  .refine((file) => file.type === "application/pdf", "Only PDF files are allowed")
+  .refine((file) => file.size <= 5 * 1024 * 1024, "File must be 5MB or smaller");
+
+export const recruiterRegisterSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().email("Enter a valid email address").transform((email) => email.toLowerCase()),
+  password: z.string().min(8, "Password must be at least 8 characters").max(100),
+  companyName: z.string().min(2, "Company name must be at least 2 characters").max(150),
+  companyLicensePaper: pdfFileSchema,
+  selfDocument: pdfFileSchema,
+});
+
 export const otpSchema = z.object({
   email: z.string().email("Enter a valid email address").transform((email) => email.toLowerCase()),
   otp: z.string().regex(/^\d{6}$/, "OTP must be exactly 6 digits"),

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ROUTES } from "@/src/config/routes";
-import { LoginForm } from "./login-form";
+import { RecruiterRegisterForm } from "./recruiter-register-form";
 
 function CheckIcon() {
   return (
@@ -12,12 +12,13 @@ function CheckIcon() {
 }
 
 const HIGHLIGHTS = [
-  "One account for candidates, recruiters, and admins",
-  "Pick up assessments and reviews right where you left off",
-  "Your results and evaluations, always in one place",
+  "Build a reusable bank of MCQ, written, and coding problems",
+  "Publish assessments and invite candidates in minutes",
+  "Review and score submissions from one dashboard",
+  "Verification keeps your company profile trusted on the platform",
 ];
 
-export function LoginPage() {
+export function RecruiterRegisterPage() {
   return (
     <main className="grid min-h-screen grid-cols-1 lg:grid-cols-[1.05fr_1fr]">
       {/* Brand / highlights panel */}
@@ -33,14 +34,14 @@ export function LoginPage() {
 
         <div className="relative z-10 space-y-1">
           <span className="font-heading text-sm font-semibold tracking-tight">AssessFlow</span>
-          <p className="text-xs text-primary-foreground/70">Welcome back</p>
+          <p className="text-xs text-primary-foreground/70">Recruiter access</p>
         </div>
 
         <div className="relative z-10 space-y-8">
           <h1 className="font-heading text-3xl leading-tight font-medium text-balance">
-            Good to see you
+            Hire on evidence,
             <br />
-            again.
+            not just resumes.
           </h1>
 
           <ul className="space-y-3.5">
@@ -54,31 +55,32 @@ export function LoginPage() {
         </div>
 
         <p className="relative z-10 text-xs text-primary-foreground/60">
-          New to AssessFlow? <Link className="underline underline-offset-2" href={ROUTES.register}>Create an account →</Link>
+          Looking for a job instead? <Link className="underline underline-offset-2" href={ROUTES.register}>Register as a candidate →</Link>
         </p>
       </section>
 
       {/* Form panel */}
       <section className="flex items-center justify-center bg-background px-4 py-10 sm:px-8">
-        <div className="w-full max-w-sm space-y-6">
+        <div className="w-full max-w-md space-y-6">
           <div className="space-y-1 lg:hidden">
             <span className="font-heading text-sm font-semibold tracking-tight text-primary">AssessFlow</span>
           </div>
 
           <div className="space-y-1.5">
-            <h2 className="font-heading text-xl font-medium tracking-tight">Sign in</h2>
-            <p className="text-xs text-muted-foreground">Use your registered email and password to continue.</p>
+            <h2 className="font-heading text-xl font-medium tracking-tight">Register your company</h2>
+            <p className="text-xs text-muted-foreground">
+              Create a recruiter account, upload your verification documents, and verify with OTP.
+            </p>
           </div>
 
-          <LoginForm />
+          <RecruiterRegisterForm />
 
           <div className="space-y-2 text-center text-xs text-muted-foreground">
-            <p className="lg:hidden">
-              New here? <Link className="font-medium text-primary hover:underline" href={ROUTES.register}>Create an account</Link>
-            </p>
             <p>
-              Or <Link className="font-medium text-primary hover:underline" href={ROUTES.registerRecruiter}>register your company</Link> to
-              hire candidates.
+              Already have an account? <Link className="font-medium text-primary hover:underline" href={ROUTES.login}>Sign in</Link>
+            </p>
+            <p className="lg:hidden">
+              Looking for a job instead? <Link className="font-medium text-primary hover:underline" href={ROUTES.register}>Register as a candidate</Link>
             </p>
           </div>
         </div>

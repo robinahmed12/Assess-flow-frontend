@@ -10,10 +10,14 @@ import type {
   MeResponseDto,
   RegisterCandidateRequestDto,
   RegisterCandidateResponseDto,
+  RegisterRecruiterRequestDto,
+  RegisterRecruiterResponseDto,
   ResetPasswordRequestDto,
   ResetPasswordResponseDto,
   VerifyForgotPasswordOtpRequestDto,
   VerifyForgotPasswordOtpResponseDto,
+  VerifyRecruiterOtpRequestDto,
+  VerifyRecruiterOtpResponseDto,
   VerifyRegistrationOtpRequestDto,
   VerifyRegistrationOtpResponseDto,
 } from "../types";
@@ -23,6 +27,17 @@ type ApiEnvelope<T> = {
   message: string;
   data: T;
 };
+
+function toRecruiterFormData(payload: RegisterRecruiterRequestDto): FormData {
+  const formData = new FormData();
+  formData.append("name", payload.name);
+  formData.append("email", payload.email);
+  formData.append("password", payload.password);
+  formData.append("companyName", payload.companyName);
+  formData.append("companyLicensePaper", payload.companyLicensePaper);
+  formData.append("selfDocument", payload.selfDocument);
+  return formData;
+}
 
 async function unwrap<T>(request: Promise<ApiEnvelope<T> | T>): Promise<T> {
   const response = await request;
@@ -57,6 +72,18 @@ export const authApi = {
 
   verifyRegistrationOtp: (payload: VerifyRegistrationOtpRequestDto) =>
     unwrap(apiClient<ApiEnvelope<VerifyRegistrationOtpResponseDto>>("/auth/verify-registration-otp", {
+      method: "POST",
+      body: payload,
+    })),
+
+  registerRecruiter: (payload: RegisterRecruiterRequestDto) =>
+    unwrap(apiClient<ApiEnvelope<RegisterRecruiterResponseDto>>("/recruiters/register", {
+      method: "POST",
+      body: toRecruiterFormData(payload),
+    })),
+
+  verifyRecruiterOtp: (payload: VerifyRecruiterOtpRequestDto) =>
+    unwrap(apiClient<ApiEnvelope<VerifyRecruiterOtpResponseDto>>("/recruiters/verify-otp", {
       method: "POST",
       body: payload,
     })),
