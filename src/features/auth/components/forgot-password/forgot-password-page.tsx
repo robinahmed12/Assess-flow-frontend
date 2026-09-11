@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ROUTES } from "@/src/config/routes";
-import { LoginForm } from "./login-form";
+import { ForgotPasswordForm } from "./forgot-password-form";
 
 function CheckIcon() {
   return (
@@ -18,12 +18,12 @@ function CheckIcon() {
 }
 
 const HIGHLIGHTS = [
-  "One account for candidates, recruiters, and admins",
-  "Pick up assessments and reviews right where you left off",
-  "Your results and evaluations, always in one place",
+  "We'll email a 6-digit code to confirm it's you",
+  "The code expires shortly after it's sent, for your security",
+  "Set a new password and sign in right away",
 ];
 
-export function LoginPage() {
+export function ForgotPasswordPage() {
   return (
     <main className="grid min-h-screen grid-cols-1 lg:grid-cols-[1.05fr_1fr]">
       {/* Brand / highlights panel */}
@@ -44,14 +44,14 @@ export function LoginPage() {
           >
             AssessFlow
           </Link>
-          <p className="text-xs text-primary-foreground/70">Welcome back</p>
+          <p className="text-xs text-primary-foreground/70">Account recovery</p>
         </div>
 
         <div className="relative z-10 space-y-8">
           <h1 className="font-heading text-3xl leading-tight font-medium text-balance">
-            Good to see you
+            Let&apos;s get you
             <br />
-            again.
+            back in.
           </h1>
 
           <ul className="space-y-3.5">
@@ -68,9 +68,9 @@ export function LoginPage() {
         </div>
 
         <p className="relative z-10 text-xs text-primary-foreground/60">
-          New to AssessFlow?{" "}
-          <Link className="underline underline-offset-2" href={ROUTES.register}>
-            Create an account →
+          Remembered your password?{" "}
+          <Link className="underline underline-offset-2" href={ROUTES.login}>
+            Sign in →
           </Link>
         </p>
       </section>
@@ -86,36 +86,25 @@ export function LoginPage() {
 
           <div className="space-y-1.5">
             <h2 className="font-heading text-xl font-medium tracking-tight">
-              Sign in
+              Reset your password
             </h2>
             <p className="text-xs text-muted-foreground">
-              Use your registered email and password to continue.
+              Enter your email and we&apos;ll send you a code to reset your
+              password.
             </p>
           </div>
 
-          <LoginForm />
+          <ForgotPasswordForm />
 
-          <div className="space-y-2 text-center text-xs text-muted-foreground">
-            <p className="lg:hidden">
-              New here?{" "}
-              <Link
-                className="font-medium text-primary hover:underline"
-                href={ROUTES.register}
-              >
-                Create an account
-              </Link>
-            </p>
-            <p>
-              Or{" "}
-              <Link
-                className="font-medium text-primary hover:underline"
-                href={ROUTES.registerRecruiter}
-              >
-                register your company
-              </Link>{" "}
-              to hire candidates.
-            </p>
-          </div>
+          <p className="text-center text-xs text-muted-foreground lg:hidden">
+            Remembered your password?{" "}
+            <Link
+              className="font-medium text-primary hover:underline"
+              href={ROUTES.login}
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
       </section>
     </main>

@@ -17,6 +17,7 @@ import { Separator } from "@/src/shared/components/ui/separator";
 import { recruiterRegisterSchema, otpSchema } from "../../schemas";
 import type { VerifyRecruiterOtpRequestDto } from "../../types";
 import { useRegisterRecruiter, useVerifyRecruiterOtp } from "../../hooks";
+import { toast } from "sonner";
 
 type RecruiterRegisterFormValues = {
   name: string;
@@ -42,7 +43,12 @@ function AlertIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" className="size-4">
       <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M10 6v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M10 6v5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
       <circle cx="10" cy="13.5" r="0.9" fill="currentColor" />
     </svg>
   );
@@ -50,9 +56,27 @@ function AlertIcon() {
 
 function MailIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="size-4 text-muted-foreground">
-      <rect x="3" y="5" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3.5 5.5L10 11l6.5-5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      className="size-4 text-muted-foreground"
+    >
+      <rect
+        x="3"
+        y="5"
+        width="14"
+        height="10"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+      />
+      <path
+        d="M3.5 5.5L10 11l6.5-5.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -66,17 +90,42 @@ function FileIcon() {
         strokeWidth="1.3"
         strokeLinejoin="round"
       />
-      <path d="M11 3v3.5H14.5" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path
+        d="M11 3v3.5H14.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function UploadIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="size-4 text-muted-foreground">
-      <path d="M10 13V4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M6.5 7.5 10 4l3.5 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4 14v1.5A1.5 1.5 0 0 0 5.5 17h9a1.5 1.5 0 0 0 1.5-1.5V14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      className="size-4 text-muted-foreground"
+    >
+      <path
+        d="M10 13V4"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6.5 7.5 10 4l3.5 3.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 14v1.5A1.5 1.5 0 0 0 5.5 17h9a1.5 1.5 0 0 0 1.5-1.5V14"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -84,7 +133,12 @@ function UploadIcon() {
 function XIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" className="size-3.5">
-      <path d="M5 5l10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M5 5l10 10M15 5 5 15"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -98,15 +152,29 @@ function StepTracker({ step }: { step: 1 | 2 }) {
           <span
             className={cn(
               "flex size-5 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
-              step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+              step >= s
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground",
             )}
           >
             {s}
           </span>
-          <span className={cn("text-[11px] font-medium", step >= s ? "text-foreground" : "text-muted-foreground")}>
+          <span
+            className={cn(
+              "text-[11px] font-medium",
+              step >= s ? "text-foreground" : "text-muted-foreground",
+            )}
+          >
             {s === 1 ? "Company & account" : "Verify email"}
           </span>
-          {s === 1 ? <span className={cn("h-px flex-1", step >= 2 ? "bg-primary" : "bg-border")} /> : null}
+          {s === 1 ? (
+            <span
+              className={cn(
+                "h-px flex-1",
+                step >= 2 ? "bg-primary" : "bg-border",
+              )}
+            />
+          ) : null}
         </div>
       ))}
     </div>
@@ -119,7 +187,9 @@ function SectionLabel({ index, title }: { index: string; title: string }) {
       <Badge variant="secondary" className="rounded-full px-1.5">
         {index}
       </Badge>
-      <span className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">{title}</span>
+      <span className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
+        {title}
+      </span>
     </div>
   );
 }
@@ -139,13 +209,19 @@ function PdfFileField({ id, value, onChange, onBlur, error }: FileFieldProps) {
       <div
         className={cn(
           "flex items-center gap-3 border px-3 py-2.5",
-          error ? "border-destructive/60 bg-destructive/5" : "border-primary/25 bg-primary/5",
+          error
+            ? "border-destructive/60 bg-destructive/5"
+            : "border-primary/25 bg-primary/5",
         )}
       >
         <FileIcon />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-medium text-foreground">{value.name}</p>
-          <p className="text-[11px] text-muted-foreground">{formatFileSize(value.size)}</p>
+          <p className="truncate text-xs font-medium text-foreground">
+            {value.name}
+          </p>
+          <p className="text-[11px] text-muted-foreground">
+            {formatFileSize(value.size)}
+          </p>
         </div>
         <button
           type="button"
@@ -169,7 +245,8 @@ function PdfFileField({ id, value, onChange, onBlur, error }: FileFieldProps) {
     >
       <UploadIcon />
       <span className="text-xs text-muted-foreground">
-        <span className="font-medium text-foreground">Click to upload</span> · PDF, up to 5MB
+        <span className="font-medium text-foreground">Click to upload</span> ·
+        PDF, up to 5MB
       </span>
       <input
         id={id}
@@ -206,8 +283,15 @@ export function RecruiterRegisterForm() {
       const result = recruiterRegisterSchema.safeParse(value);
 
       if (!result.success) {
-        setFormError(result.error.issues[0]?.message ?? "Please fix the highlighted fields.");
+        setFormError(
+          result.error.issues[0]?.message ??
+            "Please fix the highlighted fields.",
+        );
         return;
+      } else {
+        toast.success(
+          "Registration successful! Please check your email for the verification code.",
+        );
       }
 
       await registerMutation.mutateAsync(result.data);
@@ -221,9 +305,17 @@ export function RecruiterRegisterForm() {
       otp: "",
     } satisfies VerifyRecruiterOtpRequestDto,
     onSubmit: async ({ value }) => {
-      const payload = otpSchema.parse({ ...value, email: registeredEmail });
-      await verifyOtpMutation.mutateAsync(payload);
-      router.replace(ROUTES.recruiterDashboard);
+      try {
+        const payload = otpSchema.parse({ ...value, email: registeredEmail });
+        console.log("Verifying OTP with payload:", payload);
+        await verifyOtpMutation.mutateAsync(payload);
+
+        toast.success("OTP verified successfully! Redirecting…");
+        router.replace(ROUTES.recruiterDashboard);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        toast.error(err?.message ?? "Failed to verify OTP. Please try again.");
+      }
     },
   });
 
@@ -243,8 +335,9 @@ export function RecruiterRegisterForm() {
           <div className="flex items-start gap-2.5 border border-primary/20 bg-primary/5 px-3 py-2.5 text-xs text-foreground">
             <MailIcon />
             <p>
-              We sent a 6-digit code to <span className="font-medium">{registeredEmail}</span>. Enter it below to
-              activate your recruiter account.
+              We sent a 6-digit code to{" "}
+              <span className="font-medium">{registeredEmail}</span>. Enter it
+              below to activate your recruiter account.
             </p>
           </div>
 
@@ -252,8 +345,13 @@ export function RecruiterRegisterForm() {
             name="otp"
             validators={{
               onBlur: ({ value }) => {
-                const result = z.string().regex(/^\d{6}$/, "OTP must be exactly 6 digits").safeParse(value);
-                return result.success ? undefined : result.error.issues[0]?.message;
+                const result = z
+                  .string()
+                  .regex(/^\d{6}$/, "OTP must be exactly 6 digits")
+                  .safeParse(value);
+                return result.success
+                  ? undefined
+                  : result.error.issues[0]?.message;
               },
             }}
           >
@@ -274,7 +372,9 @@ export function RecruiterRegisterForm() {
                   onChange={(event) => field.handleChange(event.target.value)}
                 />
                 {field.state.meta.errors.length > 0 ? (
-                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                  <p className="text-xs text-destructive">
+                    {field.state.meta.errors[0]}
+                  </p>
                 ) : null}
               </div>
             )}
@@ -283,15 +383,26 @@ export function RecruiterRegisterForm() {
           {verifyOtpMutation.isError ? (
             <Alert variant="destructive">
               <AlertIcon />
-              <AlertDescription>{getErrorMessage(verifyOtpMutation.error)}</AlertDescription>
+              <AlertDescription>
+                {getErrorMessage(verifyOtpMutation.error)}
+              </AlertDescription>
             </Alert>
           ) : null}
 
-          <Button type="submit" disabled={verifyOtpMutation.isPending} className="h-10 w-full">
+          <Button
+            type="submit"
+            disabled={verifyOtpMutation.isPending}
+            className="h-10 w-full"
+          >
             {verifyOtpMutation.isPending ? "Verifying..." : "Verify account"}
           </Button>
 
-          <Button type="button" variant="outline" className="h-10 w-full" onClick={() => setRegisteredEmail("")}>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-10 w-full"
+            onClick={() => setRegisteredEmail("")}
+          >
             Use a different email
           </Button>
         </form>
@@ -318,8 +429,11 @@ export function RecruiterRegisterForm() {
             name="name"
             validators={{
               onBlur: ({ value }) => {
-                const result = recruiterRegisterSchema.shape.name.safeParse(value);
-                return result.success ? undefined : result.error.issues[0]?.message;
+                const result =
+                  recruiterRegisterSchema.shape.name.safeParse(value);
+                return result.success
+                  ? undefined
+                  : result.error.issues[0]?.message;
               },
             }}
           >
@@ -338,7 +452,9 @@ export function RecruiterRegisterForm() {
                   onChange={(event) => field.handleChange(event.target.value)}
                 />
                 {field.state.meta.errors.length > 0 ? (
-                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                  <p className="text-xs text-destructive">
+                    {field.state.meta.errors[0]}
+                  </p>
                 ) : null}
               </div>
             )}
@@ -348,8 +464,11 @@ export function RecruiterRegisterForm() {
             name="email"
             validators={{
               onBlur: ({ value }) => {
-                const result = recruiterRegisterSchema.shape.email.safeParse(value);
-                return result.success ? undefined : result.error.issues[0]?.message;
+                const result =
+                  recruiterRegisterSchema.shape.email.safeParse(value);
+                return result.success
+                  ? undefined
+                  : result.error.issues[0]?.message;
               },
             }}
           >
@@ -368,7 +487,9 @@ export function RecruiterRegisterForm() {
                   onChange={(event) => field.handleChange(event.target.value)}
                 />
                 {field.state.meta.errors.length > 0 ? (
-                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                  <p className="text-xs text-destructive">
+                    {field.state.meta.errors[0]}
+                  </p>
                 ) : null}
               </div>
             )}
@@ -378,8 +499,11 @@ export function RecruiterRegisterForm() {
             name="password"
             validators={{
               onBlur: ({ value }) => {
-                const result = recruiterRegisterSchema.shape.password.safeParse(value);
-                return result.success ? undefined : result.error.issues[0]?.message;
+                const result =
+                  recruiterRegisterSchema.shape.password.safeParse(value);
+                return result.success
+                  ? undefined
+                  : result.error.issues[0]?.message;
               },
             }}
           >
@@ -398,7 +522,9 @@ export function RecruiterRegisterForm() {
                   onChange={(event) => field.handleChange(event.target.value)}
                 />
                 {field.state.meta.errors.length > 0 ? (
-                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                  <p className="text-xs text-destructive">
+                    {field.state.meta.errors[0]}
+                  </p>
                 ) : null}
               </div>
             )}
@@ -414,8 +540,11 @@ export function RecruiterRegisterForm() {
             name="companyName"
             validators={{
               onBlur: ({ value }) => {
-                const result = recruiterRegisterSchema.shape.companyName.safeParse(value);
-                return result.success ? undefined : result.error.issues[0]?.message;
+                const result =
+                  recruiterRegisterSchema.shape.companyName.safeParse(value);
+                return result.success
+                  ? undefined
+                  : result.error.issues[0]?.message;
               },
             }}
           >
@@ -434,7 +563,9 @@ export function RecruiterRegisterForm() {
                   onChange={(event) => field.handleChange(event.target.value)}
                 />
                 {field.state.meta.errors.length > 0 ? (
-                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                  <p className="text-xs text-destructive">
+                    {field.state.meta.errors[0]}
+                  </p>
                 ) : null}
               </div>
             )}
@@ -449,7 +580,9 @@ export function RecruiterRegisterForm() {
           <registerForm.Field name="companyLicensePaper">
             {(field) => (
               <div className="space-y-1.5">
-                <Label htmlFor={field.name}>Company license / trade document</Label>
+                <Label htmlFor={field.name}>
+                  Company license / trade document
+                </Label>
                 <PdfFileField
                   id={field.name}
                   value={field.state.value}
@@ -485,12 +618,20 @@ export function RecruiterRegisterForm() {
         {registerMutation.isError ? (
           <Alert variant="destructive">
             <AlertIcon />
-            <AlertDescription>{getErrorMessage(registerMutation.error)}</AlertDescription>
+            <AlertDescription>
+              {getErrorMessage(registerMutation.error)}
+            </AlertDescription>
           </Alert>
         ) : null}
 
-        <Button type="submit" disabled={registerMutation.isPending} className="h-10 w-full">
-          {registerMutation.isPending ? "Submitting..." : "Create recruiter account"}
+        <Button
+          type="submit"
+          disabled={registerMutation.isPending}
+          className="h-10 w-full"
+        >
+          {registerMutation.isPending
+            ? "Submitting..."
+            : "Create recruiter account"}
         </Button>
       </form>
     </div>
