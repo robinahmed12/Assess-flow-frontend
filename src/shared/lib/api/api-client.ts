@@ -14,10 +14,6 @@ export const apiClient = ofetch.create({
   onResponseError({ response }) {
     const data = response._data as Partial<ApiErrorResponse> | undefined;
 
-    console.error("API Error:", {
-      status: response.status,
-      message: data?.message,
-    });
 
     throw new Error(
       data?.message || "Something went wrong. Please try again."
