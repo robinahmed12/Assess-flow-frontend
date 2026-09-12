@@ -9,6 +9,7 @@ import {
   type VerifyRegistrationOtpRequestDto,
 } from "../types";
 import { authApi } from "../api/auth.api";
+import Cookies from "js-cookie";
 
 
 export function useRegisterCandidate() {
@@ -24,6 +25,10 @@ export function useVerifyRegistrationOtp() {
   return useMutation({
     mutationFn: (payload: VerifyRegistrationOtpRequestDto) => authApi.verifyRegistrationOtp(payload),
     onSuccess: async (data) => {
+       Cookies.set("accessToken", data.accessToken, {
+        expires: 7,
+        sameSite: "lax",
+      });
       queryClient.setQueryData(AUTH_QUERY_KEYS.me, data.user);
       await queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEYS.me });
     },
@@ -44,6 +49,10 @@ export function useVerifyRecruiterOtp() {
   return useMutation({
     mutationFn: (payload: VerifyRecruiterOtpRequestDto) => authApi.verifyRecruiterOtp(payload),
     onSuccess: async (data) => {
+        Cookies.set("accessToken", data.accessToken, {
+        expires: 7,
+        sameSite: "lax",
+      });
       queryClient.setQueryData(AUTH_QUERY_KEYS.me, data.user);
       await queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEYS.me });
     },

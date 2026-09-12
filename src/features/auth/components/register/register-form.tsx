@@ -13,8 +13,13 @@ import { Label } from "@/src/shared/components/ui/label";
 import { Alert, AlertDescription } from "@/src/shared/components/ui/alert";
 
 import { candidateRegisterSchema, otpSchema } from "../../schemas";
-import type { RegisterCandidateRequestDto, VerifyRegistrationOtpRequestDto } from "../../types";
+import type {
+  RegisterCandidateRequestDto,
+  VerifyRegistrationOtpRequestDto,
+} from "../../types";
 import { useRegisterCandidate, useVerifyRegistrationOtp } from "../../hooks";
+import { Separator } from "@/src/shared/components/ui/separator";
+import { GoogleLoginButton } from "../login/google-login-button";
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
@@ -25,7 +30,12 @@ function AlertIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" className="size-4">
       <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M10 6v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M10 6v5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
       <circle cx="10" cy="13.5" r="0.9" fill="currentColor" />
     </svg>
   );
@@ -33,9 +43,27 @@ function AlertIcon() {
 
 function MailIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="size-4 text-muted-foreground">
-      <rect x="3" y="5" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3.5 5.5L10 11l6.5-5.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      className="size-4 text-muted-foreground"
+    >
+      <rect
+        x="3"
+        y="5"
+        width="14"
+        height="10"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+      />
+      <path
+        d="M3.5 5.5L10 11l6.5-5.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -49,7 +77,9 @@ function StepTracker({ step }: { step: 1 | 2 }) {
           <span
             className={cn(
               "flex size-5 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
-              step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+              step >= s
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground",
             )}
           >
             {s}
@@ -63,7 +93,12 @@ function StepTracker({ step }: { step: 1 | 2 }) {
             {s === 1 ? "Your details" : "Verify email"}
           </span>
           {s === 1 ? (
-            <span className={cn("h-px flex-1", step >= 2 ? "bg-primary" : "bg-border")} />
+            <span
+              className={cn(
+                "h-px flex-1",
+                step >= 2 ? "bg-primary" : "bg-border",
+              )}
+            />
           ) : null}
         </div>
       ))}
@@ -119,8 +154,9 @@ export function RegisterForm() {
           <div className="flex items-start gap-2.5 border border-primary/20 bg-primary/5 px-3 py-2.5 text-xs text-foreground">
             <MailIcon />
             <p>
-              We sent a 6-digit code to <span className="font-medium">{registeredEmail}</span>. Enter it below to
-              activate your account.
+              We sent a 6-digit code to{" "}
+              <span className="font-medium">{registeredEmail}</span>. Enter it
+              below to activate your account.
             </p>
           </div>
 
@@ -128,8 +164,13 @@ export function RegisterForm() {
             name="otp"
             validators={{
               onBlur: ({ value }) => {
-                const result = z.string().regex(/^\d{6}$/, "OTP must be exactly 6 digits").safeParse(value);
-                return result.success ? undefined : result.error.issues[0]?.message;
+                const result = z
+                  .string()
+                  .regex(/^\d{6}$/, "OTP must be exactly 6 digits")
+                  .safeParse(value);
+                return result.success
+                  ? undefined
+                  : result.error.issues[0]?.message;
               },
             }}
           >
@@ -150,7 +191,9 @@ export function RegisterForm() {
                   onChange={(event) => field.handleChange(event.target.value)}
                 />
                 {field.state.meta.errors.length > 0 ? (
-                  <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                  <p className="text-xs text-destructive">
+                    {field.state.meta.errors[0]}
+                  </p>
                 ) : null}
               </div>
             )}
@@ -159,11 +202,17 @@ export function RegisterForm() {
           {verifyOtpMutation.isError ? (
             <Alert variant="destructive">
               <AlertIcon />
-              <AlertDescription>{getErrorMessage(verifyOtpMutation.error)}</AlertDescription>
+              <AlertDescription>
+                {getErrorMessage(verifyOtpMutation.error)}
+              </AlertDescription>
             </Alert>
           ) : null}
 
-          <Button type="submit" disabled={verifyOtpMutation.isPending} className="h-10 w-full">
+          <Button
+            type="submit"
+            disabled={verifyOtpMutation.isPending}
+            className="h-10 w-full"
+          >
             {verifyOtpMutation.isPending ? "Verifying..." : "Verify account"}
           </Button>
 
@@ -196,8 +245,11 @@ export function RegisterForm() {
           name="name"
           validators={{
             onBlur: ({ value }) => {
-              const result = candidateRegisterSchema.shape.name.safeParse(value);
-              return result.success ? undefined : result.error.issues[0]?.message;
+              const result =
+                candidateRegisterSchema.shape.name.safeParse(value);
+              return result.success
+                ? undefined
+                : result.error.issues[0]?.message;
             },
           }}
         >
@@ -216,7 +268,9 @@ export function RegisterForm() {
                 onChange={(event) => field.handleChange(event.target.value)}
               />
               {field.state.meta.errors.length > 0 ? (
-                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                <p className="text-xs text-destructive">
+                  {field.state.meta.errors[0]}
+                </p>
               ) : null}
             </div>
           )}
@@ -226,8 +280,11 @@ export function RegisterForm() {
           name="email"
           validators={{
             onBlur: ({ value }) => {
-              const result = candidateRegisterSchema.shape.email.safeParse(value);
-              return result.success ? undefined : result.error.issues[0]?.message;
+              const result =
+                candidateRegisterSchema.shape.email.safeParse(value);
+              return result.success
+                ? undefined
+                : result.error.issues[0]?.message;
             },
           }}
         >
@@ -246,7 +303,9 @@ export function RegisterForm() {
                 onChange={(event) => field.handleChange(event.target.value)}
               />
               {field.state.meta.errors.length > 0 ? (
-                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                <p className="text-xs text-destructive">
+                  {field.state.meta.errors[0]}
+                </p>
               ) : null}
             </div>
           )}
@@ -256,8 +315,11 @@ export function RegisterForm() {
           name="password"
           validators={{
             onBlur: ({ value }) => {
-              const result = candidateRegisterSchema.shape.password.safeParse(value);
-              return result.success ? undefined : result.error.issues[0]?.message;
+              const result =
+                candidateRegisterSchema.shape.password.safeParse(value);
+              return result.success
+                ? undefined
+                : result.error.issues[0]?.message;
             },
           }}
         >
@@ -276,7 +338,9 @@ export function RegisterForm() {
                 onChange={(event) => field.handleChange(event.target.value)}
               />
               {field.state.meta.errors.length > 0 ? (
-                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+                <p className="text-xs text-destructive">
+                  {field.state.meta.errors[0]}
+                </p>
               ) : null}
             </div>
           )}
@@ -285,13 +349,28 @@ export function RegisterForm() {
         {registerMutation.isError ? (
           <Alert variant="destructive">
             <AlertIcon />
-            <AlertDescription>{getErrorMessage(registerMutation.error)}</AlertDescription>
+            <AlertDescription>
+              {getErrorMessage(registerMutation.error)}
+            </AlertDescription>
           </Alert>
         ) : null}
 
-        <Button type="submit" disabled={registerMutation.isPending} className="h-10 w-full">
-          {registerMutation.isPending ? "Creating account..." : "Create account"}
+        <Button
+          type="submit"
+          disabled={registerMutation.isPending}
+          className="h-10 w-full"
+        >
+          {registerMutation.isPending
+            ? "Creating account..."
+            : "Create account"}
         </Button>
+        <div className="my-4 flex items-center gap-2">
+          <Separator className="flex-1" />
+          <span className="text-sm text-gray-500">OR</span>
+          <Separator className="flex-1" />
+        </div>
+
+        <GoogleLoginButton />
       </form>
     </div>
   );

@@ -18,6 +18,7 @@ import { recruiterRegisterSchema, otpSchema } from "../../schemas";
 import type { VerifyRecruiterOtpRequestDto } from "../../types";
 import { useRegisterRecruiter, useVerifyRecruiterOtp } from "../../hooks";
 import { toast } from "sonner";
+import { GoogleLoginButton } from "../login/google-login-button";
 
 type RecruiterRegisterFormValues = {
   name: string;
@@ -312,7 +313,7 @@ export function RecruiterRegisterForm() {
 
         toast.success("OTP verified successfully! Redirecting…");
         router.replace(ROUTES.recruiterDashboard);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         toast.error(err?.message ?? "Failed to verify OTP. Please try again.");
       }
@@ -633,6 +634,13 @@ export function RecruiterRegisterForm() {
             ? "Submitting..."
             : "Create recruiter account"}
         </Button>
+        <div className="my-4 flex items-center gap-2">
+          <Separator className="flex-1" />
+          <span className="text-sm text-gray-500">OR</span>
+          <Separator className="flex-1" />
+        </div>
+
+        <GoogleLoginButton />
       </form>
     </div>
   );

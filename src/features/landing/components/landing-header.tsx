@@ -17,12 +17,18 @@ import {
 
 import { ROUTES } from "@/src/config/routes";
 import { useMe } from "@/src/features/auth/hooks";
-import { AUTH_QUERY_KEYS, USER_ROLES, type AuthUser, type UserRole } from "@/src/features/auth/types";
+import {
+  AUTH_QUERY_KEYS,
+  USER_ROLES,
+  type AuthUser,
+  type UserRole,
+} from "@/src/features/auth/types";
 import { Avatar, AvatarFallback } from "@/src/shared/components/ui/avatar";
 import { Button } from "@/src/shared/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -38,13 +44,25 @@ type NavLink = {
 const ROLE_LINKS: Record<UserRole, NavLink[]> = {
   [USER_ROLES.CANDIDATE]: [
     { label: "Dashboard", href: ROUTES.candidateDashboard, icon: GaugeIcon },
-    { label: "Assessments", href: ROUTES.candidateAssessments, icon: ListChecksIcon },
-    { label: "My Attempts", href: ROUTES.candidateAttempts, icon: FileTextIcon },
+    {
+      label: "Assessments",
+      href: ROUTES.candidateAssessments,
+      icon: ListChecksIcon,
+    },
+    {
+      label: "My Attempts",
+      href: ROUTES.candidateAttempts,
+      icon: FileTextIcon,
+    },
   ],
   [USER_ROLES.RECRUITER]: [
     { label: "Dashboard", href: ROUTES.recruiterDashboard, icon: GaugeIcon },
     { label: "Problems", href: ROUTES.recruiterProblems, icon: FileTextIcon },
-    { label: "Assessments", href: ROUTES.recruiterAssessments, icon: ListChecksIcon },
+    {
+      label: "Assessments",
+      href: ROUTES.recruiterAssessments,
+      icon: ListChecksIcon,
+    },
     { label: "Company", href: ROUTES.recruiterCompany, icon: ShieldCheckIcon },
     { label: "Billing", href: ROUTES.recruiterBilling, icon: ReceiptIcon },
   ],
@@ -104,29 +122,47 @@ function UserMenu({ user }: { user: AuthUser }) {
           <CaretDownIcon className="size-3 text-muted-foreground" />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-          <DropdownMenuLabel className="flex flex-col gap-0.5 px-2 py-2">
-            <span className="text-xs font-medium text-foreground">{user.name}</span>
-            <span className="truncate text-[11px] text-muted-foreground">{user.email}</span>
-            <span className="mt-1 w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-              {ROLE_LABEL[user.role]}
-            </span>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+       <DropdownMenuContent align="end" sideOffset={8} className="w-56">
 
-          {links.map((link) => (
-            <DropdownMenuItem key={link.href} render={<Link href={link.href} />}>
-              <link.icon className="size-4" />
-              {link.label}
-            </DropdownMenuItem>
-          ))}
+  <DropdownMenuGroup>
+    <DropdownMenuLabel className="flex flex-col gap-0.5 px-2 py-2">
+      <span className="text-xs font-medium text-foreground">
+        {user.name}
+      </span>
 
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
-            <SignOutIcon className="size-4" />
-            Sign out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
+      <span className="truncate text-[11px] text-muted-foreground">
+        {user.email}
+      </span>
+
+      <span className="mt-1 w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+        {ROLE_LABEL[user.role]}
+      </span>
+    </DropdownMenuLabel>
+  </DropdownMenuGroup>
+
+  <DropdownMenuSeparator />
+
+  {links.map((link) => (
+    <DropdownMenuItem
+      key={link.href}
+      render={<Link href={link.href} />}
+    >
+      <link.icon className="size-4" />
+      {link.label}
+    </DropdownMenuItem>
+  ))}
+
+  <DropdownMenuSeparator />
+
+  <DropdownMenuItem
+    variant="destructive"
+    onClick={handleSignOut}
+  >
+    <SignOutIcon className="size-4" />
+    Sign out
+  </DropdownMenuItem>
+
+</DropdownMenuContent>
       </DropdownMenu>
     </div>
   );
@@ -136,7 +172,12 @@ function HeaderAuthSlot() {
   const meQuery = useMe();
 
   if (meQuery.isLoading) {
-    return <div className="size-8 animate-pulse rounded-full bg-muted" aria-hidden="true" />;
+    return (
+      <div
+        className="size-8 animate-pulse rounded-full bg-muted"
+        aria-hidden="true"
+      />
+    );
   }
 
   if (meQuery.data) {
@@ -162,7 +203,10 @@ export function LandingHeader() {
         {/* Brand */}
         <Link href={ROUTES.home} className="flex items-center gap-2">
           <span className="flex size-6 items-center justify-center rounded-none bg-primary">
-            <ChartLineUpIcon className="size-3.5 text-primary-foreground" weight="bold" />
+            <ChartLineUpIcon
+              className="size-3.5 text-primary-foreground"
+              weight="bold"
+            />
           </span>
           <span className="font-heading text-sm font-semibold tracking-tight text-foreground">
             AssessFlow

@@ -14,6 +14,8 @@ import { Button } from "@/src/shared/components/ui/button";
 import { Input } from "@/src/shared/components/ui/input";
 import { Label } from "@/src/shared/components/ui/label";
 import { Alert, AlertDescription } from "@/src/shared/components/ui/alert";
+import { GoogleLoginButton } from "./google-login-button";
+import { Separator } from "@/src/shared/components/ui/separator";
 
 function getRoleRedirect(role: string) {
   switch (role) {
@@ -37,7 +39,12 @@ function AlertIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" className="size-4">
       <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M10 6v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M10 6v5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
       <circle cx="10" cy="13.5" r="0.9" fill="currentColor" />
     </svg>
   );
@@ -52,7 +59,13 @@ function EyeIcon() {
         strokeWidth="1.3"
         strokeLinejoin="round"
       />
-      <circle cx="10" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.3" />
+      <circle
+        cx="10"
+        cy="10"
+        r="2.25"
+        stroke="currentColor"
+        strokeWidth="1.3"
+      />
     </svg>
   );
 }
@@ -121,7 +134,9 @@ export function LoginForm() {
               onChange={(event) => field.handleChange(event.target.value)}
             />
             {field.state.meta.errors.length > 0 ? (
-              <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+              <p className="text-xs text-destructive">
+                {field.state.meta.errors[0]}
+              </p>
             ) : null}
           </div>
         )}
@@ -131,7 +146,10 @@ export function LoginForm() {
         name="password"
         validators={{
           onBlur: ({ value }) => {
-            const result = z.string().min(1, "Password is required").safeParse(value);
+            const result = z
+              .string()
+              .min(1, "Password is required")
+              .safeParse(value);
             return result.success ? undefined : result.error.issues[0]?.message;
           },
         }}
@@ -170,7 +188,9 @@ export function LoginForm() {
               </button>
             </div>
             {field.state.meta.errors.length > 0 ? (
-              <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
+              <p className="text-xs text-destructive">
+                {field.state.meta.errors[0]}
+              </p>
             ) : null}
           </div>
         )}
@@ -179,13 +199,26 @@ export function LoginForm() {
       {loginMutation.isError ? (
         <Alert variant="destructive">
           <AlertIcon />
-          <AlertDescription>{getErrorMessage(loginMutation.error)}</AlertDescription>
+          <AlertDescription>
+            {getErrorMessage(loginMutation.error)}
+          </AlertDescription>
         </Alert>
       ) : null}
 
-      <Button type="submit" disabled={loginMutation.isPending} className="h-10 w-full">
+      <Button
+        type="submit"
+        disabled={loginMutation.isPending}
+        className="h-10 w-full"
+      >
         {loginMutation.isPending ? "Signing in..." : "Sign in"}
       </Button>
+      <div className="my-4 flex items-center gap-2">
+        <Separator className="flex-1" />
+        <span className="text-sm text-gray-500">OR</span>
+        <Separator className="flex-1" />
+      </div>
+
+      <GoogleLoginButton />
     </form>
   );
 }
