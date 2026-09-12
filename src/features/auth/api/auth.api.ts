@@ -39,7 +39,7 @@ function toRecruiterFormData(payload: RegisterRecruiterRequestDto): FormData {
   return formData;
 }
 
-async function unwrap<T>(request: Promise<ApiEnvelope<T> | T>): Promise<T> {
+export async function unwrap<T>(request: Promise<ApiEnvelope<T> | T>): Promise<T> {
   const response = await request;
 
   if (response && typeof response === "object" && "success" in response && "data" in response) {
