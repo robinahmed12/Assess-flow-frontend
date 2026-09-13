@@ -13,14 +13,23 @@ import { Button } from "@/src/shared/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/shared/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/src/shared/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/src/shared/components/ui/sheet";
 import { DashboardSidebar } from "./dashboard-sidebar";
-import { findActiveNavItem, ROLE_LABELS, type DashboardRole } from "./dashboard-nav";
+import {
+  findActiveNavItem,
+  ROLE_LABELS,
+  type DashboardRole,
+} from "./dashboard-nav";
 
 function getInitials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -42,7 +51,12 @@ function UserMenu({ role }: { role: DashboardRole }) {
   }
 
   if (meQuery.isLoading) {
-    return <div className="size-8 animate-pulse rounded-full bg-muted" aria-hidden="true" />;
+    return (
+      <div
+        className="size-8 animate-pulse rounded-full bg-muted"
+        aria-hidden="true"
+      />
+    );
   }
 
   const user = meQuery.data;
@@ -71,14 +85,23 @@ function UserMenu({ role }: { role: DashboardRole }) {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-          <DropdownMenuLabel className="flex flex-col gap-0.5 px-2 py-2">
-            <span className="text-xs font-medium text-foreground">{displayName}</span>
-            {user?.email ? <span className="truncate text-[11px] text-muted-foreground">{user.email}</span> : null}
-            <span className="mt-1 w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-              {ROLE_LABELS[role]}
-            </span>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="flex flex-col gap-0.5 px-2 py-2">
+              <span className="text-xs font-medium text-foreground">
+                {displayName}
+              </span>
+              {user?.email ? (
+                <span className="truncate text-[11px] text-muted-foreground">
+                  {user.email}
+                </span>
+              ) : null}
+              <span className="mt-1 w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                {ROLE_LABELS[role]}
+              </span>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </DropdownMenuGroup>
+
           <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
             <SignOutIcon className="size-4" />
             Sign out
@@ -100,18 +123,25 @@ export function DashboardHeader({ role }: { role: DashboardRole }) {
         {/* Mobile nav trigger */}
         <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
           <SheetTrigger
-            render={<Button variant="ghost" size="icon-sm" className="md:hidden" />}
+            render={
+              <Button variant="ghost" size="icon-sm" className="md:hidden" />
+            }
           >
             <ListIcon className="size-4" />
             <span className="sr-only">Open navigation</span>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0">
-            <DashboardSidebar role={role} onNavigate={() => setMobileNavOpen(false)} />
+            <DashboardSidebar
+              role={role}
+              onNavigate={() => setMobileNavOpen(false)}
+            />
           </SheetContent>
         </Sheet>
 
         <div className="flex items-center gap-2">
-          {activeItem ? <activeItem.icon className="hidden size-4 text-muted-foreground sm:block" /> : null}
+          {activeItem ? (
+            <activeItem.icon className="hidden size-4 text-muted-foreground sm:block" />
+          ) : null}
           <h2 className="font-heading text-sm font-semibold text-foreground sm:text-base">
             {activeItem?.title ?? "Dashboard"}
           </h2>
