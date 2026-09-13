@@ -1,19 +1,18 @@
-interface Props {
-  params: {
-    attemptId: string;
-  };
-}
+import { AttemptWorkspace } from "@/src/features/candidate-attempt";
 
-export default function Page({ params }: Props) {
-  return (
-    <main>
-      <h1 className="text-2xl font-bold">
-        Attempt Workspace
-      </h1>
 
-      <p>
-        Attempt ID: {params.attemptId}
-      </p>
-    </main>
-  );
+export default function Page({
+ params,
+}:{
+ params:{
+  attemptId:string;
+ }
+}){
+
+ return (
+  <AttemptWorkspace
+   attemptId={params.attemptId}
+  />
+ );
+
 }
