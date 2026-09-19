@@ -1,4 +1,4 @@
-import {CandidateResultPage} from "@/features/candidate-result";
+import {CandidateResultPage} from "@/src/features/candidate-result";
 
 export default function Page({
  params

@@ -1,6 +1,7 @@
 "use client";
 
 import {useCandidateAssessments} from "../hooks/use-candidate-assessments";
+import { CandidateAssessmentDto } from "../types/candidate-assessments.dto";
 import {AssessmentCard} from "./assessment-card";
 
 export function CandidateAssessmentsPage(){
@@ -17,7 +18,7 @@ export function CandidateAssessmentsPage(){
     <div className="border rounded-xl p-6">
      No assessments assigned
     </div>
-   ) : data.map(item=>(
+   ) : data.map((item: CandidateAssessmentDto)=>(
     <AssessmentCard key={item.id} data={item}/>
    ))}
   </div>

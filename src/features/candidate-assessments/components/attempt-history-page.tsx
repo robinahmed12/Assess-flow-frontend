@@ -3,6 +3,7 @@
 import {useAttemptHistory} from "../hooks/use-attempt-history";
 import {StatusBadge} from "./status-badge";
 import {formatDate} from "../utils/date-format";
+import { AttemptHistoryDto,   } from "../types/candidate-assessments.dto";
 
 export function AttemptHistoryPage(){
 
@@ -14,7 +15,7 @@ export function AttemptHistoryPage(){
   <div className="space-y-5">
    <h1 className="text-2xl font-bold">Attempt History</h1>
 
-   {data.map(item=>(
+   {data.map((item: AttemptHistoryDto)=>(
     <div key={item.id} className="rounded-xl border p-5 space-y-2">
      <h2 className="font-semibold">{item.assessment.title}</h2>
      <StatusBadge status={item.status}/>

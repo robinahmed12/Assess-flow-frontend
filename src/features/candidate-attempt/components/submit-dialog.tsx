@@ -9,7 +9,7 @@ import {
  AlertDialogFooter,
  AlertDialogHeader,
  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/src/shared/components/ui/alert-dialog";
 
 
 export function SubmitDialog({

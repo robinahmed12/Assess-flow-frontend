@@ -1,5 +1,6 @@
-import { apiClient } from "@/shared/api/client";
-import { unwrap } from "@/shared/api/envelope";
+import { apiClient } from "@/src/shared/lib/api/api-client";
+import { unwrap } from "../../auth/api";
+
 
 export const candidateResultApi = {
  getResult:(attemptId:string)=>
