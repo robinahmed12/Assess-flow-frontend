@@ -1,41 +1,78 @@
-
 import { apiClient } from "@/src/shared/lib/api/api-client";
-import type {ProblemDto,CreateProblemRequestDto} from "../types/problem.dto";
 import { unwrap } from "../../auth/api/auth.api";
+import { PROBLEM_TYPES } from "../constants/problem.constants";
+import type {
+  CreateProblemRequestDto,
+  ProblemDto,
+  ProblemOptionDto,
+  ProblemType,
+  UpdateProblemRequestDto,
+} from "../types/problem.dto";
 
-export const problemApi={
+type ProblemRawDto = Omit<
+  ProblemDto,
+  "tags" | "status" | "type" | "options" | "description" | "difficulty" | "points"
+> & {
+  tags?: string[] | null;
+  status?: string;
+  type?: string;
+  options?: ProblemOptionDto[] | null;
+  description?: string | null;
+  difficulty?: string | null;
+  points?: number | null;
+};
 
- list:()=> 
-  unwrap(
-   apiClient<ProblemDto[]>("/problems")
-  ),
+function toProblemType(value?: string): ProblemType {
+  return PROBLEM_TYPES.find((type) => type === value) ?? "WRITTEN";
+}
 
- get:(id:string)=>
-  unwrap(
-   apiClient<ProblemDto>(`/problems/${id}`)
-  ),
+function toProblemDto(raw: ProblemRawDto): ProblemDto {
+  return {
+    ...raw,
+    type: toProblemType(raw.type),
+    description: raw.description ?? "",
+    points: raw.points ?? 0,
+    difficulty: raw.difficulty ?? null,
+    tags: raw.tags ?? [],
+    status: raw.status === "ARCHIVED" ? "ARCHIVED" : "ACTIVE",
+    options: raw.options ?? [],
+  };
+}
 
- create:(payload:CreateProblemRequestDto)=>
-  unwrap(
-   apiClient<ProblemDto>("/problems",{
-    method:"POST",
-    body:payload
-   })
-  ),
+export const problemApi = {
+  list: async () => {
+    const items = await unwrap(apiClient<ProblemRawDto[]>("/problems"));
 
- update:(id:string,payload:Partial<CreateProblemRequestDto>)=>
-  unwrap(
-   apiClient<ProblemDto>(`/problems/${id}`,{
-    method:"PATCH",
-    body:payload
-   })
-  ),
+    return items.map(toProblemDto);
+  },
 
- archive:(id:string)=>
-  unwrap(
-   apiClient(`/problems/${id}`,{
-    method:"DELETE"
-   })
-  )
+  get: async (id: string) =>
+    toProblemDto(await unwrap(apiClient<ProblemRawDto>(`/problems/${id}`))),
 
+  create: async (payload: CreateProblemRequestDto) =>
+    toProblemDto(
+      await unwrap(
+        apiClient<ProblemRawDto>("/problems", {
+          method: "POST",
+          body: payload,
+        }),
+      ),
+    ),
+
+  update: async (id: string, payload: UpdateProblemRequestDto) =>
+    toProblemDto(
+      await unwrap(
+        apiClient<ProblemRawDto>(`/problems/${id}`, {
+          method: "PATCH",
+          body: payload,
+        }),
+      ),
+    ),
+
+  archive: (id: string) =>
+    unwrap(
+      apiClient(`/problems/${id}`, {
+        method: "DELETE",
+      }),
+    ),
 };

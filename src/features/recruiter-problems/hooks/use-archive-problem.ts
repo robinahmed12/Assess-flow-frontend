@@ -2,20 +2,22 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { problemApi } from "../api/problem.api";
-import type { CreateProblemRequestDto } from "../types/problem.dto";
 
-export function useCreateProblem() {
+export function useArchiveProblem() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateProblemRequestDto) => problemApi.create(payload),
+    mutationFn: (id: string) => problemApi.archive(id),
 
-    onSuccess: (problem) => {
+    onSuccess: (_data, id) => {
       qc.invalidateQueries({
         queryKey: ["problems", "list"],
       });
       qc.invalidateQueries({
-        queryKey: ["problems", "detail", problem.id],
+        queryKey: ["problems", "detail", id],
+      });
+      qc.invalidateQueries({
+        queryKey: ["assessments", "list"],
       });
     },
   });

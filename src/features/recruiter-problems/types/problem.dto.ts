@@ -3,6 +3,10 @@ export type ProblemType =
  | "WRITTEN"
  | "CODING";
 
+export type ProblemStatus =
+ | "ACTIVE"
+ | "ARCHIVED";
+
 export interface ProblemOptionDto {
  id:string;
  text:string;
@@ -17,8 +21,15 @@ export interface ProblemDto {
  points:number;
  difficulty?:string|null;
  tags:string[];
- status:string;
+ status:ProblemStatus;
  options?:ProblemOptionDto[];
+ createdAt?:string;
+ updatedAt?:string;
+}
+
+export interface CreateProblemOptionDto {
+ text:string;
+ isCorrect:boolean;
 }
 
 export interface CreateProblemRequestDto {
@@ -28,8 +39,7 @@ export interface CreateProblemRequestDto {
  points:number;
  difficulty?:string;
  tags:string[];
- options?:{
-  text:string;
-  isCorrect:boolean;
- }[];
+ options?:CreateProblemOptionDto[];
 }
+
+export type UpdateProblemRequestDto=Partial<CreateProblemRequestDto>;
