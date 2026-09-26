@@ -1,20 +1,29 @@
 import { z } from "zod";
 
+const requiredNumber = (message: string) =>
+  z
+    .string()
+    .trim()
+    .min(1, message)
+    .pipe(z.coerce.number());
+
 export const createAssessmentSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(3, "Title must be at least 3 characters")
     .max(200),
   description: z.string().max(2000).optional(),
-  durationMinutes: z.coerce
-    .number()
-    .int()
-    .min(1, "Duration must be at least 1 minute")
-    .max(1440),
-  passingScore: z.coerce
-    .number()
-    .int()
-    .min(0, "Passing score cannot be negative"),
+  durationMinutes: requiredNumber("Duration is required").pipe(
+    z
+      .number()
+      .int()
+      .min(1, "Duration must be at least 1 minute")
+      .max(1440),
+  ),
+  passingScore: requiredNumber("Passing score is required").pipe(
+    z.number().int().min(0, "Passing score cannot be negative"),
+  ),
   problemIds: z
     .array(z.string().min(1))
     .min(1, "At least one problem is required")

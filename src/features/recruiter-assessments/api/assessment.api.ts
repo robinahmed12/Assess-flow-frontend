@@ -30,7 +30,7 @@ export const assessmentApi = {
 
   get: (id: string) =>
     unwrap(
-      apiClient<AssessmentDetailDto>(`/assessments?${id}`),
+      apiClient<AssessmentDetailDto>(`/assessments/${id}`),
     ),
 
   create: (payload: CreateAssessmentRequestDto) =>

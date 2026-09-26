@@ -13,10 +13,10 @@ export function useAssessmentDetail(id: string) {
 
   const totalPoints = useMemo(
     () =>
-      query.data?.problems.reduce(
-        (sum, item) => sum + (item.problem.points ?? 0),
+      (query.data?.problems ?? []).reduce(
+        (sum, item) => sum + (item?.problem?.points ?? 0),
         0,
-      ) ?? 0,
+      ),
     [query.data],
   );
 

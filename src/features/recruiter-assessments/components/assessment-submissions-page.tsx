@@ -1,7 +1,6 @@
 "use client";
 
 import {useState} from "react";
-import Link from "next/link";
 
 import {useSubmissions} from "../hooks/use-submissions";
 import {useAssessmentDetail} from "../hooks/use-assessment-detail";
@@ -113,13 +112,12 @@ export function AssessmentSubmissionsPage({assessmentId}:{assessmentId:string}){
            </TableRow>
           </TableHeader>
           <TableBody>
-           {rows.map(submission=>(
-            <SubmissionRow
-             key={submission.id}
-             submission={submission}
-             assessmentId={assessmentId}
-            />
-           ))}
+            {rows.map(submission=>(
+             <SubmissionRow
+              key={submission.id}
+              submission={submission}
+             />
+            ))}
           </TableBody>
          </Table>
         )}
@@ -153,9 +151,8 @@ export function AssessmentSubmissionsPage({assessmentId}:{assessmentId:string}){
  );
 }
 
-function SubmissionRow({submission,assessmentId}:{
+function SubmissionRow({submission}:{
  submission:SubmissionDto;
- assessmentId:string;
 }){
 
  const hasResult=submission.evaluatedAnswerCount>0&&submission.totalScore!=null;
@@ -187,13 +184,11 @@ function SubmissionRow({submission,assessmentId}:{
      ? new Date(submission.submittedAt).toLocaleDateString()
      : "—"}
    </TableCell>
-   <TableCell className="text-right">
-    <Button variant="outline" size="sm">
-     <Link href={`/recruiter/assessments/${assessmentId}/submissions/${submission.id}`}>
+    <TableCell className="text-right">
+     <Button variant="outline" size="sm" disabled title="Submission review is not available yet">
       Review
-     </Link>
-    </Button>
-   </TableCell>
+     </Button>
+    </TableCell>
   </TableRow>
  );
 }

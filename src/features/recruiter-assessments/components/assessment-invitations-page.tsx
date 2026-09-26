@@ -57,7 +57,7 @@ export function AssessmentInvitationsPage({assessmentId}:{assessmentId:string}){
  };
 
  const copyLink=(invitation:InvitationDto)=>{
-  const link=invitation.invitationLink??`${window.location.origin}/candidate/attempts/${invitation.token}`;
+   const link=invitation.invitationLink??`${window.location.origin}/candidate/assessments`;
   void navigator.clipboard.writeText(link);
   toast.success("Invitation link copied");
  };

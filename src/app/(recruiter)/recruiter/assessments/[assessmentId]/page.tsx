@@ -1,11 +1,11 @@
-import {AssessmentDetailPage} from "@/src/features/recruiter-assessments";
+import { AssessmentDetailPage } from "@/src/features/recruiter-assessments";
 
-export default function Page({params}:{params:{assessmentId:string}}){
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ assessmentId: string }>;
+}) {
+  const { assessmentId } = await params;
 
- return (
-  <AssessmentDetailPage
-   assessmentId={params.assessmentId}
-  />
- );
-
+  return <AssessmentDetailPage assessmentId={assessmentId} />;
 }

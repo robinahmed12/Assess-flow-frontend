@@ -36,13 +36,12 @@ export function AssessmentEditPage({assessmentId}:{assessmentId:string}){
 
  useEffect(()=>{
   if(!data)return;
- // eslint-disable-next-line react-hooks/set-state-in-effect -- sync the controlled form once the fetched assessment arrives (prefill)
-// eslint-disable-next-line react-hooks/set-state-in-effect -- sync the controlled form once the fetched assessment arrives (intentional prefill before the first Submit)
- setTitle(data.title);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-time prefill of the controlled form once the fetched assessment arrives
+  setTitle(data.title);
   setDescription(data.description??"");
   setDuration(String(data.duration));
   setPassingScore(data.passingScore!=null?String(data.passingScore):"");
-  setProblemIds(data.problems.map(item=>item.problem.id));
+  setProblemIds(data.problems.flatMap(item => item.problem ? [item.problem.id] : []));
  },[data]);
 
  const selectedPoints=useMemo(
