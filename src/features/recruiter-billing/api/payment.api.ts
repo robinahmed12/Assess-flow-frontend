@@ -3,7 +3,8 @@ import { apiClient } from "@/src/shared/lib/api/api-client";
 import type {
   CheckoutRequestDto,
   CheckoutResponseDto,
-  PaymentDto
+  PaymentDto,
+  PaymentStatus
 } from "../types/payment.dto";
 import { unwrap } from "../../auth/api";
 import { CHECKOUT_URL_KEYS } from "../constants/payment.constants";
@@ -55,7 +56,11 @@ function toCheckoutResponse(raw: CheckoutRawResponse): CheckoutResponseDto {
   };
 
   const url =
-    typeof raw === "string" ? raw.trim() : raw && typeof raw === "object" ? fromObject(raw) : null;
+    typeof raw === "string"
+      ? raw.trim()
+      : raw && typeof raw === "object"
+        ? fromObject(raw)
+        : null;
 
   if (!url) {
     throw new Error("The payment provider did not return a checkout URL.");
@@ -65,9 +70,31 @@ function toCheckoutResponse(raw: CheckoutRawResponse): CheckoutResponseDto {
 }
 
 
+export interface PaymentListParams {
+  page?: number;
+  limit?: number;
+  status?: PaymentStatus;
+}
+
+export interface PaymentPage {
+  items: PaymentDto[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 type PaymentListResponse =
   | PaymentDto[]
   | {
+      meta?: {
+        page?: number;
+        limit?: number;
+        total?: number;
+        totalPages?: number;
+      };
       data?: PaymentDto[];
       payments?: PaymentDto[];
       items?: PaymentDto[];
@@ -75,46 +102,34 @@ type PaymentListResponse =
       rows?: PaymentDto[];
     };
 
-type PaymentDetailResponse =
-  | PaymentDto
-  | {
-      data?: PaymentDto;
-      payment?: PaymentDto;
-      item?: PaymentDto;
+function toPaymentPage(raw: PaymentListResponse): PaymentPage {
+  if (Array.isArray(raw)) {
+    return {
+      items: raw,
+      meta: {
+        page: 1,
+        limit: raw.length,
+        total: raw.length,
+        totalPages: 1,
+      },
     };
-
-function toPaymentDto(raw: PaymentDetailResponse): PaymentDto {
-  if (raw && typeof raw === "object" && !("id" in raw)) {
-    const nested = [raw.data, raw.payment, raw.item];
-    const match = nested.find(
-      (value): value is PaymentDto =>
-        Boolean(value) && typeof value === "object" && "id" in value
-    );
-    if (match) return match;
   }
 
-  return raw as PaymentDto;
-}
-
-
-function toPaymentList(raw: PaymentListResponse): PaymentDto[] {
-  if (Array.isArray(raw)) return raw;
-
-  if (raw && typeof raw === "object") {
-    const nested = [
-      raw.data,
-      raw.payments,
-      raw.items,
-      raw.results,
-      raw.rows,
-    ];
-    const list = nested.find(
+  const items =
+    [raw.data, raw.payments, raw.items, raw.results, raw.rows].find(
       (value): value is PaymentDto[] => Array.isArray(value)
-    );
-    if (list) return list;
-  }
+    ) ?? [];
+  const meta = raw.meta ?? {};
 
-  return [];
+  return {
+    items,
+    meta: {
+      page: meta.page ?? 1,
+      limit: meta.limit ?? items.length,
+      total: meta.total ?? items.length,
+      totalPages: meta.totalPages ?? 1,
+    },
+  };
 }
 
 
@@ -145,19 +160,28 @@ bkashCheckout:(payload:CheckoutRequestDto)=>
   ).then(toCheckoutResponse),
 
 
-list:()=>
-  unwrap<PaymentListResponse>(
+listPage:(params:PaymentListParams={})=>{
+  const query=new URLSearchParams();
+
+  if(params.page)query.set("page",String(params.page));
+  if(params.limit)query.set("limit",String(params.limit));
+  if(params.status)query.set("status",params.status);
+
+  const qs=query.toString();
+
+  return unwrap<PaymentListResponse>(
    apiClient<PaymentListResponse>(
-    "/stripe-payments"
+    `/stripe-payments${qs?`?${qs}`:""}`
    )
-  ).then(toPaymentList),
+  ).then(toPaymentPage);
+},
 
 
 detail:(id:string)=>
-  unwrap<PaymentDetailResponse>(
-   apiClient<PaymentDetailResponse>(
+  unwrap(
+   apiClient<PaymentDto>(
     `/stripe-payments/${id}`
    )
-  ).then(toPaymentDto)
+  )
 
 };

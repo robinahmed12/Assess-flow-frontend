@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 
-import { PaymentCancelPage } from "@/src/features/recruiter-billing";
+import { PaymentBkashSuccessPage } from "@/src/features/recruiter-billing";
 
 export default function Page() {
   return (
     <Suspense>
-      <PaymentCancelPage />
+      <PaymentBkashSuccessPage />
     </Suspense>
   );
 }

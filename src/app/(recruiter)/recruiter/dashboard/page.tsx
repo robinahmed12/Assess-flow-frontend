@@ -1,5 +1,5 @@
-import { CandidateDashboardPage } from "@/src/features/candidate-dashboard";
+import { RecruiterDashboardPage } from "@/src/features/recruiter-dashboard";
 
 export default function Page() {
-  return <CandidateDashboardPage />;
+  return <RecruiterDashboardPage />;
 }

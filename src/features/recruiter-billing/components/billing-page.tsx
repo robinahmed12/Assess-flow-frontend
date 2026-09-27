@@ -52,21 +52,22 @@ type StatusFilter = PaymentStatus | "ALL";
 export function BillingPage() {
   const queryClient = useQueryClient();
   const { data: company, isLoading: isCompanyLoading } = useCompany();
+
+  const [provider, setProvider] = useState<PaymentProvider>("STRIPE");
+  const [status, setStatus] = useState<StatusFilter>("ALL");
+
   const {
     data: payments,
     isLoading,
     isError,
     error,
     refetch,
-  } = usePayments();
+  } = usePayments(status === "ALL" ? {} : { status });
   const checkout = useCheckout();
   const data = useMemo(
     () => (Array.isArray(payments) ? payments : []),
     [payments],
   );
-
-  const [provider, setProvider] = useState<PaymentProvider>("STRIPE");
-  const [status, setStatus] = useState<StatusFilter>("ALL");
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["payments", "recruiter"] });

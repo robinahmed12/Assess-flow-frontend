@@ -37,6 +37,15 @@ export function PaymentDetailPage({ paymentId }: { paymentId: string }) {
 
       {isLoading ? (
         <PaymentDetailSkeleton />
+      ) : isError &&
+        error instanceof Error &&
+        (error as Error & { status?: number }).status === 404 ? (
+        <div className="border border-dashed p-12 text-center">
+          <p className="font-medium">Payment not found</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            This payment does not exist or belongs to another company.
+          </p>
+        </div>
       ) : isError ? (
         <div className="border border-destructive/40 p-6">
           <p className="font-medium text-destructive">

@@ -1,18 +1,11 @@
 import { AttemptWorkspace } from "@/src/features/candidate-attempt";
 
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ attemptId: string }>;
+}) {
+  const { attemptId } = await params;
 
-export default function Page({
- params,
-}:{
- params:{
-  attemptId:string;
- }
-}){
-
- return (
-  <AttemptWorkspace
-   attemptId={params.attemptId}
-  />
- );
-
+  return <AttemptWorkspace attemptId={attemptId} />;
 }
