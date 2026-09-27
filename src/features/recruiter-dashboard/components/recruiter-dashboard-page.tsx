@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/shared/components/ui/card";
-import { DashboardLayout } from "@/src/shared/components/dashboard";
 import { useRecruiterDashboard } from "../hooks/use-recruiter-dashboard";
 
 export function RecruiterDashboardPage() {

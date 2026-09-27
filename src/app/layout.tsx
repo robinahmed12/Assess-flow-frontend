@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Your App",
+  title: "AssessFlow",
   description: "Your App",
 };
 

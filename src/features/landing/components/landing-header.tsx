@@ -80,6 +80,12 @@ const ROLE_LABEL: Record<UserRole, string> = {
   [USER_ROLES.ADMIN]: "Admin",
 };
 
+const PUBLIC_NAV: NavLink[] = [
+  { label: "Features", href: "#features", icon: ChartLineUpIcon },
+  { label: "How it works", href: "#how-it-works", icon: ListChecksIcon },
+  { label: "For recruiters", href: "#feature-for-recruiters", icon: UsersIcon },
+];
+
 function getInitials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return "?";
@@ -87,7 +93,7 @@ function getInitials(name: string) {
   return `${parts[0]![0]}${parts.at(-1)![0]}`.toUpperCase();
 }
 
-/** Hover-to-open user menu shown in the header once a session is present. */
+/** Click-to-open user menu shown in the header once a session is present. */
 function UserMenu({ user }: { user: AuthUser }) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -101,16 +107,18 @@ function UserMenu({ user }: { user: AuthUser }) {
   }
 
   return (
-    <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger
-          render={
-            <button
-              type="button"
-              className="flex items-center gap-2 rounded-none border border-transparent px-1.5 py-1 transition-colors hover:border-border hover:bg-accent"
-            />
-          }
-        >
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger
+        render={
+          <button
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+            className="flex items-center gap-2 rounded-none border border-transparent px-1.5 py-1 transition-colors hover:border-border hover:bg-accent"
+          />
+        }
+      >
           <Avatar size="sm">
             <AvatarFallback className="bg-primary/10 text-[11px] font-semibold text-primary">
               {getInitials(user.name)}
@@ -163,8 +171,7 @@ function UserMenu({ user }: { user: AuthUser }) {
   </DropdownMenuItem>
 
 </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    </DropdownMenu>
   );
 }
 
@@ -215,6 +222,19 @@ export function LandingHeader() {
 
         {/* Nav actions */}
         <nav className="flex items-center gap-2" aria-label="Main navigation">
+          <ul className="hidden items-center gap-1 md:flex">
+            {PUBLIC_NAV.map((item) => (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <item.icon className="size-3.5" />
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <HeaderAuthSlot />
         </nav>
       </div>

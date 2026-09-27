@@ -88,7 +88,7 @@ const WORKFLOW_STEPS = [
 
 export function LandingFeatures() {
   return (
-    <section aria-labelledby="features-heading" className="border-t bg-muted/30">
+    <section id="features" aria-labelledby="features-heading" className="border-t bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         <div className="mb-12 text-center">
           <h2
@@ -104,7 +104,10 @@ export function LandingFeatures() {
 
         <div className="grid gap-6 sm:grid-cols-3">
           {FEATURES.map((feature) => (
-            <Card key={feature.label}>
+            <Card
+              key={feature.label}
+              id={`feature-${feature.label.toLowerCase().replace(/\s+/g, "-")}`}
+            >
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <span className="flex size-8 shrink-0 items-center justify-center rounded-none bg-primary/10">
@@ -132,7 +135,7 @@ export function LandingFeatures() {
         </div>
 
         {/* How it works */}
-        <div className="mt-20">
+        <div id="how-it-works" className="mt-20">
           <div className="mb-10 flex flex-col items-center gap-2 text-center">
             <Badge variant="outline" className="px-3 py-1 text-xs">
               How it works
