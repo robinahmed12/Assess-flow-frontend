@@ -1,24 +1,18 @@
 "use client";
 
-import {useMutation} from "@tanstack/react-query";
-import {attemptApi} from "../api/attempt.api";
+import { useMutation } from "@tanstack/react-query";
+import { attemptApi, type SaveAnswerPayload } from "../api/attempt.api";
 
-export function useSaveAnswer(){
-
- return useMutation({
-  mutationFn:({
-    attemptId,
-    problemId,
-    payload,
-  }:{
-    attemptId:string;
-    problemId:string;
-    payload:object;
-  }) =>
-    attemptApi.saveAnswer(
+export function useSaveAnswer() {
+  return useMutation({
+    mutationFn: ({
       attemptId,
       problemId,
-      payload
-    ),
- });
+      payload,
+    }: {
+      attemptId: string;
+      problemId: string;
+      payload: SaveAnswerPayload;
+    }) => attemptApi.saveAnswer(attemptId, problemId, payload),
+  });
 }

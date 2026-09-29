@@ -1,18 +1,25 @@
-import { apiClient } from "@/src/shared/lib/api/api-client";
-import { unwrap } from "../../auth/api/auth.api";
-
+import { apiClient } from "@/src/shared/lib/api";
+import { unwrap } from "../../auth";
+import type {
+  AttemptHistoryDto,
+  CandidateAssessmentDto,
+  StartedAttemptDto,
+} from "../types/candidate-assessments.dto";
 
 export const candidateAssessmentsApi = {
   getAssessments: () =>
-    unwrap(apiClient("/candidate/assessments")),
+    unwrap(apiClient<CandidateAssessmentDto[]>("/candidate/assessments")),
 
   getAttempts: () =>
-    unwrap(apiClient("/attempts/me")),
+    unwrap(apiClient<AttemptHistoryDto[]>("/attempts/me")),
 
   startAssessment: (id: string) =>
     unwrap(
-      apiClient(`/candidate/assessments/${id}/start`, {
-        method: "POST",
-      })
+      apiClient<StartedAttemptDto>(
+        `/candidate/assessments/${id}/start`,
+        {
+          method: "POST",
+        },
+      ),
     ),
 };

@@ -12,6 +12,8 @@ export const ROUTES = {
   candidateDashboard: "/candidate/dashboard",
   candidateAssessments: "/candidate/assessments",
   candidateAttempts: "/candidate/attempts",
+  candidateAttempt: (attemptId: string) => `/candidate/attempts/${attemptId}`,
+  candidateResult: (attemptId: string) => `/candidate/results/${attemptId}`,
   recruiterDashboard: "/recruiter/dashboard",
   recruiterProblems: "/recruiter/problems",
   recruiterAssessments: "/recruiter/assessments",
