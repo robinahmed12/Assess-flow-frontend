@@ -1,24 +1,12 @@
-import {apiClient} from "@/shared/api/client";
-import {unwrap} from "@/shared/api/envelope";
-import type {
- AdminPaymentDto,
- PaymentFilterDto
-} from "../types/payment.dto";
+import { apiClient } from "@/src/shared/lib/api/api-client";
+import { unwrap } from "../../auth/api/auth.api";
+import type { AdminPaymentDto, PaymentFilterDto } from "../types/payment.dto";
 
-
-export const adminPaymentsApi={
-
-
-list:(params?:PaymentFilterDto)=>
-
- unwrap(
-  apiClient<AdminPaymentDto[]>(
-   "/admin/payments",
-   {
-    params
-   }
-  )
- )
-
-
+export const adminPaymentsApi = {
+  list: (params?: PaymentFilterDto) =>
+    unwrap<AdminPaymentDto[]>(
+      apiClient<AdminPaymentDto[]>("/admin/payments", {
+        params,
+      }),
+    ),
 };

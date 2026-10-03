@@ -1,41 +1,22 @@
-import {apiClient} from "@/shared/api/client";
-import {unwrap} from "@/shared/api/envelope";
-import type {
- AdminUserDto,
- UserListParams
-} from "../types/admin-user.dto";
+import { apiClient } from "@/src/shared/lib/api/api-client";
+import { unwrap } from "../../auth/api/auth.api";
+import type { AdminUserDto, UserListParams } from "../types/admin-user.dto";
 
+export type AdminUserStatus = "ACTIVE" | "SUSPENDED";
 
-export const adminUsersApi={
+export const adminUsersApi = {
+  list: (params?: UserListParams) =>
+    unwrap<AdminUserDto[]>(
+      apiClient<AdminUserDto[]>("/admin/users", {
+        params,
+      }),
+    ),
 
-
-list:(params?:UserListParams)=>
-
- unwrap(
-  apiClient<AdminUserDto[]>(
-   "/admin/users",
-   {
-    params
-   }
-  )
- ),
-
-
-updateStatus:(
- id:string,
- status:"ACTIVE"|"SUSPENDED"
-)=>
-
- unwrap(
-  apiClient(
-   `/admin/users/${id}/status`,
-   {
-    method:"PATCH",
-    body:{
-     status
-    }
-   }
-  )
- )
-
+  updateStatus: (id: string, status: AdminUserStatus) =>
+    unwrap(
+      apiClient(`/admin/users/${id}/status`, {
+        method: "PATCH",
+        body: { status },
+      }),
+    ),
 };

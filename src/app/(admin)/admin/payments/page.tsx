@@ -1,5 +1,5 @@
-import { AdminPaymentsPage } from "@/features/admin-payments";
+import { AdminPaymentsPage } from "@/src/features/admin-payments";
 
-export default function Page(){
- return <AdminPaymentsPage />;
+export default function Page() {
+  return <AdminPaymentsPage />;
 }

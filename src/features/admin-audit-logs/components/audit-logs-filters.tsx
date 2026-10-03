@@ -77,7 +77,7 @@ export function AuditLogsFilters({
             onValueChange={(value) =>
               onChange({
                 ...filters,
-                entityType: value === ALL_ENTITY_TYPES ? "" : value,
+                entityType: !value || value === ALL_ENTITY_TYPES ? "" : value,
               })
             }
           >

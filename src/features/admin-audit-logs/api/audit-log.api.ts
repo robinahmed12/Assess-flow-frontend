@@ -77,7 +77,7 @@ export const auditLogApi = {
 
     const search = query.toString();
 
-    return unwrap(
+    return unwrap<RawAuditLogPage>(
       apiClient<RawAuditLogPage>(
         `${AUDIT_LOGS_ENDPOINT}${search ? `?${search}` : ""}`,
       ),
