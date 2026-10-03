@@ -31,7 +31,7 @@ import {
   AUDIT_LOG_PAGE_SIZES,
 } from "../constants/audit-log.constants";
 import { useAuditLogs } from "../hooks/use-audit-logs";
-import { buildPageWindow } from "../utils/audit-log-format";
+import { buildPageWindow } from "@/src/shared/lib/pagination";
 import type {
   AuditLogDto,
   AuditLogFilterDto,
