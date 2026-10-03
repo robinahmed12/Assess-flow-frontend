@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/shared/components/dashboard";
+import { DashboardLayout } from "@/src/shared/components/dashboard";
 
 export default function AdminLayout({
  children,

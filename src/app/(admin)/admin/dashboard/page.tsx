@@ -1,4 +1,4 @@
-import { AdminDashboardPage } from "@/features/admin-dashboard";
+import { AdminDashboardPage } from "@/src/features/admin-dashboard";
 
 export default function Page(){
  return <AdminDashboardPage />;
