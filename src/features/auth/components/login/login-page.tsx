@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { ROUTES } from "@/src/config/routes";
+import { Separator } from "@/src/shared/components/ui/separator";
+import { isDemoLoginEnabled } from "../../constants/demo-accounts";
+import { DemoLoginPanel } from "./demo-login-panel";
 import { LoginForm } from "./login-form";
 
 function CheckIcon() {
@@ -92,6 +95,20 @@ export function LoginPage() {
               Use your registered email and password to continue.
             </p>
           </div>
+
+          {isDemoLoginEnabled() && (
+            <>
+              <DemoLoginPanel />
+
+              <div className="flex items-center gap-3">
+                <Separator className="flex-1" />
+                <span className="text-xs whitespace-nowrap text-muted-foreground">
+                  or sign in manually
+                </span>
+                <Separator className="flex-1" />
+              </div>
+            </>
+          )}
 
           <LoginForm />
 

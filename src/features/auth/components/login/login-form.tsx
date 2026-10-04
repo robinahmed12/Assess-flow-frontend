@@ -7,8 +7,9 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 
 import { loginSchema } from "../../schemas";
-import { USER_ROLES, type LoginRequestDto } from "../../types";
+import { type LoginRequestDto } from "../../types";
 import { useLogin } from "../../hooks";
+import { getRoleRedirect } from "../../utils/role.redirect";
 import { ROUTES } from "@/src/config/routes";
 import { Button } from "@/src/shared/components/ui/button";
 import { Input } from "@/src/shared/components/ui/input";
@@ -16,19 +17,6 @@ import { Label } from "@/src/shared/components/ui/label";
 import { Alert, AlertDescription } from "@/src/shared/components/ui/alert";
 import { GoogleLoginButton } from "./google-login-button";
 import { Separator } from "@/src/shared/components/ui/separator";
-
-function getRoleRedirect(role: string) {
-  switch (role) {
-    case USER_ROLES.CANDIDATE:
-      return ROUTES.candidateDashboard;
-    case USER_ROLES.RECRUITER:
-      return ROUTES.recruiterDashboard;
-    case USER_ROLES.ADMIN:
-      return ROUTES.adminDashboard;
-    default:
-      return ROUTES.home;
-  }
-}
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
