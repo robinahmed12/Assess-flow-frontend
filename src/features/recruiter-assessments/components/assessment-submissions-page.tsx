@@ -1,6 +1,7 @@
 "use client";
 
 import {useState} from "react";
+import Link from "next/link";
 
 import {useSubmissions} from "../hooks/use-submissions";
 import {useAssessmentDetail} from "../hooks/use-assessment-detail";
@@ -10,7 +11,7 @@ import type {
 } from "../types/assessment.dto";
 import {ATTEMPT_STATUS_LABELS} from "../constants/assessment.constants";
 
-import {Button} from "@/src/shared/components/ui/button";
+import {Button,buttonVariants} from "@/src/shared/components/ui/button";
 import {Badge} from "@/src/shared/components/ui/badge";
 import {Skeleton} from "@/src/shared/components/ui/skeleton";
 import {Card,CardContent,CardHeader,CardTitle} from "@/src/shared/components/ui/card";
@@ -116,6 +117,7 @@ export function AssessmentSubmissionsPage({assessmentId}:{assessmentId:string}){
              <SubmissionRow
               key={submission.id}
               submission={submission}
+              assessmentId={assessmentId}
              />
             ))}
           </TableBody>
@@ -151,11 +153,28 @@ export function AssessmentSubmissionsPage({assessmentId}:{assessmentId:string}){
  );
 }
 
-function SubmissionRow({submission}:{
- submission:SubmissionDto;
-}){
+function SubmissionRow({
+  submission,
+  assessmentId,
+}: {
+  submission: SubmissionDto;
+  assessmentId: string;
+}) {
 
- const hasResult=submission.evaluatedAnswerCount>0&&submission.totalScore!=null;
+  const hasResult=submission.evaluatedAnswerCount>0&&submission.totalScore!=null;
+
+  // The backend only permits scoring and finalizing submitted attempts, so the
+  // button is enabled for those and stays visible-but-disabled with a reason
+  // everywhere else rather than silently disappearing.
+  const isReviewable=submission.status==="SUBMITTED"||submission.status==="EVALUATED";
+
+  const reviewDisabledReason=submission.status==="IN_PROGRESS"
+   ? "The candidate has not submitted yet"
+   : submission.status==="EXPIRED"
+     ? "Expired attempts cannot be scored"
+     : "Submission review is not available yet";
+
+  const reviewHref=`/recruiter/assessments/${assessmentId}/submissions/${submission.id}`;
 
  return (
   <TableRow>
@@ -185,9 +204,25 @@ function SubmissionRow({submission}:{
      : "—"}
    </TableCell>
     <TableCell className="text-right">
-     <Button variant="outline" size="sm" disabled title="Submission review is not available yet">
-      Review
-     </Button>
+     {isReviewable
+      ? (
+       <Link
+        href={reviewHref}
+        className={buttonVariants({variant:"outline",size:"sm"})}
+       >
+        Review
+       </Link>
+      )
+      : (
+       <Button
+        variant="outline"
+        size="sm"
+        disabled
+        title={reviewDisabledReason}
+       >
+        Review
+       </Button>
+      )}
     </TableCell>
   </TableRow>
  );

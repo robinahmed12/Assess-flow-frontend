@@ -173,3 +173,71 @@ export interface AssessmentReportDto {
     passRate: number;
   };
 }
+
+export interface EvaluationAnswerDto {
+  id: string;
+  answerText: string | null;
+  selectedOptionId: string | null;
+  score: number | null;
+  feedback: string | null;
+  evaluatedAt: string | null;
+}
+
+export interface EvaluationQuestionDto {
+  assessmentProblemId: string;
+  order: number;
+  problem: ProblemDto;
+  answer: EvaluationAnswerDto | null;
+  maxScore: number;
+  requiresManualEvaluation: boolean;
+}
+
+export interface AttemptEvaluationDto {
+  id: string;
+  status: AttemptStatus;
+  startedAt: string;
+  expiresAt: string | null;
+  submittedAt: string | null;
+  totalScore: number | null;
+  percentage: number | null;
+  passed: boolean | null;
+  candidate: InvitationCandidateDto;
+  candidateEmail: string;
+  assessment: {
+    id: string;
+    title: string;
+    duration: number;
+    passingScore: number | null;
+    resultVisibility: ResultVisibility;
+  };
+  questions: EvaluationQuestionDto[];
+}
+
+export interface EvaluateAnswerRequestDto {
+  score: number;
+  feedback?: string;
+}
+
+export interface EvaluateAnswerResponseDto {
+  id: string;
+  attemptId: string;
+  problemId: string;
+  score: number;
+  feedback: string | null;
+  evaluatedAt: string | null;
+}
+
+export interface FinalizeEvaluationResponseDto {
+  attemptId: string;
+  status: AttemptStatus;
+  totalScore: number | null;
+  maxScore: number;
+  percentage: number | null;
+  passed: boolean | null;
+  candidate: InvitationCandidateDto;
+  assessment: {
+    id: string;
+    title: string;
+    resultVisibility: ResultVisibility;
+  };
+}

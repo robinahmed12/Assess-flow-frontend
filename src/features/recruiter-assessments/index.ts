@@ -4,4 +4,5 @@ export * from "./components/assessment-detail-page";
 export * from "./components/assessment-edit-page";
 export * from "./components/assessment-invitations-page";
 export * from "./components/assessment-submissions-page";
+export * from "./components/assessment-attempt-review-page";
 export * from "./components/assessment-report-page";
