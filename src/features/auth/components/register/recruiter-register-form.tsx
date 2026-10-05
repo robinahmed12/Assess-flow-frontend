@@ -634,13 +634,7 @@ export function RecruiterRegisterForm() {
             ? "Submitting..."
             : "Create recruiter account"}
         </Button>
-        <div className="my-4 flex items-center gap-2">
-          <Separator className="flex-1" />
-          <span className="text-sm text-gray-500">OR</span>
-          <Separator className="flex-1" />
-        </div>
-
-        <GoogleLoginButton />
+       
       </form>
     </div>
   );

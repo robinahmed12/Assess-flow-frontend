@@ -11,6 +11,7 @@ import { type LoginRequestDto } from "../../types";
 import { useLogin } from "../../hooks";
 import { getRoleRedirect } from "../../utils/role.redirect";
 import { ROUTES } from "@/src/config/routes";
+import { isGoogleAuthConfigured } from "@/src/config/env";
 import { Button } from "@/src/shared/components/ui/button";
 import { Input } from "@/src/shared/components/ui/input";
 import { Label } from "@/src/shared/components/ui/label";
@@ -200,13 +201,18 @@ export function LoginForm() {
       >
         {loginMutation.isPending ? "Signing in..." : "Sign in"}
       </Button>
-      <div className="my-4 flex items-center gap-2">
-        <Separator className="flex-1" />
-        <span className="text-sm text-gray-500">OR</span>
-        <Separator className="flex-1" />
-      </div>
 
-      <GoogleLoginButton />
+      {isGoogleAuthConfigured && (
+        <>
+          <div className="my-4 flex items-center gap-2">
+            <Separator className="flex-1" />
+            <span className="text-sm text-gray-500">OR</span>
+            <Separator className="flex-1" />
+          </div>
+
+          <GoogleLoginButton />
+        </>
+      )}
     </form>
   );
 }
