@@ -45,20 +45,29 @@ export function CandidateResultPage({ attemptId }: { attemptId: string }) {
   return <ResultView data={data} />;
 }
 
+function safeText(value: unknown, fallback = "—"): string {
+  if (typeof value === "string" && value.length > 0) return value;
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  return fallback;
+}
+
 function ResultView({ data }: { data: CandidateResultDto }) {
-  const isFinal = data.isFinal;
-  const hasScores =
-    data.totalScore !== null &&
-    data.maxScore !== null &&
-    data.percentage !== null &&
-    data.passed !== null;
+  const isFinal = Boolean(data.isFinal);
+  const assessmentTitle = safeText(data.assessment?.title, "Untitled");
+  const submittedAt = safeText(data.submittedAt);
+  const totalScore = typeof data.totalScore === "number" ? data.totalScore : null;
+  const maxScore = typeof data.maxScore === "number" ? data.maxScore : null;
+  const percentage = typeof data.percentage === "number" ? data.percentage : null;
+  const passed = typeof data.passed === "boolean" ? data.passed : null;
+  const hasScores = totalScore !== null && maxScore !== null && percentage !== null && passed !== null;
+  const answers = Array.isArray(data.answers) ? data.answers : [];
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
           <h1 className="font-heading text-xl font-semibold text-foreground">
-            {data.assessment.title}
+            {assessmentTitle}
           </h1>
           <span
             className={`rounded-none px-2 py-0.5 text-[10px] font-medium ${
@@ -71,20 +80,20 @@ function ResultView({ data }: { data: CandidateResultDto }) {
           </span>
         </div>
         <p className="text-xs text-muted-foreground">
-          Submitted {data.submittedAt ?? "—"}
+          Submitted {submittedAt}
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <ScoreCard label="Score" value={hasScores ? `${data.totalScore}/${data.maxScore}` : "Pending"} />
+        <ScoreCard label="Score" value={hasScores ? `${totalScore}/${maxScore}` : "Pending"} />
         <ScoreCard
           label="Percentage"
-          value={data.percentage !== null ? `${data.percentage.toFixed(1)}%` : "Pending"}
+          value={percentage !== null ? `${percentage.toFixed(1)}%` : "Pending"}
         />
         <ScoreCard
           label="Result"
-          value={data.passed === null ? "Pending" : data.passed ? "Passed" : "Failed"}
-          tone={data.passed === null ? "muted" : data.passed ? "success" : "failure"}
+          value={passed === null ? "Pending" : passed ? "Passed" : "Failed"}
+          tone={passed === null ? "muted" : passed ? "success" : "failure"}
         />
         <ScoreCard label="Status" value={isFinal ? "Evaluated" : "Awaiting review"} />
       </div>
@@ -96,24 +105,28 @@ function ResultView({ data }: { data: CandidateResultDto }) {
         </div>
       ) : null}
 
-      {data.answers.length > 0 ? (
+      {answers.length > 0 ? (
         <div className="flex flex-col gap-2">
           <h2 className="text-sm font-semibold text-foreground">
             Per-question breakdown
           </h2>
-          {data.answers.map((answer) => (
-            <div
-              key={answer.id}
-              className="flex items-center justify-between rounded-none border border-border px-4 py-2.5 text-xs"
-            >
-              <span className="text-muted-foreground">
-                {answer.problemType} answer
-              </span>
-              <span className="font-semibold text-foreground">
-                {answer.score !== null ? `${answer.score} pts` : "Not evaluated"}
-              </span>
-            </div>
-          ))}
+          {answers.map((answer, index) => {
+            const problemType = safeText(answer?.problemType, "Unknown");
+            const score = typeof answer?.score === "number" ? answer.score : null;
+            return (
+              <div
+                key={safeText(answer?.id, `answer-${index}`)}
+                className="flex items-center justify-between rounded-none border border-border px-4 py-2.5 text-xs"
+              >
+                <span className="text-muted-foreground">
+                  {problemType} answer
+                </span>
+                <span className="font-semibold text-foreground">
+                  {score !== null ? `${score} pts` : "Not evaluated"}
+                </span>
+              </div>
+            );
+          })}
         </div>
       ) : null}
     </div>

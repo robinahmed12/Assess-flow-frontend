@@ -96,7 +96,7 @@ export function LoginPage() {
             </p>
           </div>
 
-          {isDemoLoginEnabled() && (
+          { (
             <>
               <DemoLoginPanel />
 
