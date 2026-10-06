@@ -27,8 +27,11 @@ const REASONS: Record<string, { title: string; description: string }> = {
 
 export function PaymentCancelPage() {
   const searchParams = useSearchParams();
-  const reason = searchParams.get("reason") ?? "cancelled";
-  const copy = REASONS[reason] ?? REASONS.cancelled;
+  const reason = searchParams.get("reason");
+  const copy =
+    reason === "cancelled" || reason === null
+      ? REASONS.cancelled
+      : REASONS[reason] ?? REASONS.error;
 
   return (
     <PaymentResultShell
