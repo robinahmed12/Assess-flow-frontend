@@ -8,6 +8,7 @@ import {
   FileTextIcon,
   GaugeIcon,
   ListChecksIcon,
+  QuestionIcon,
   ReceiptIcon,
   ShieldCheckIcon,
   SignOutIcon,
@@ -82,6 +83,8 @@ const PUBLIC_NAV: NavLink[] = [
   { label: "Features", href: "#features", icon: ChartLineUpIcon },
   { label: "How it works", href: "#how-it-works", icon: ListChecksIcon },
   { label: "For recruiters", href: "#feature-for-recruiters", icon: UsersIcon },
+  { label: "Pricing", href: "#pricing", icon: ReceiptIcon },
+  { label: "FAQ", href: "#faq", icon: QuestionIcon },
 ];
 
 function getInitials(name: string) {

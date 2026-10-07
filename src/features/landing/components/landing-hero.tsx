@@ -10,8 +10,9 @@ import {
 
 import { ROUTES } from "@/src/config/routes";
 import { Badge } from "@/src/shared/components/ui/badge";
-import { Button, buttonVariants } from "@/src/shared/components/ui/button";
+import { buttonVariants } from "@/src/shared/components/ui/button";
 import { cn } from "@/src/shared/utils";
+import { Reveal } from "./reveal";
 
 const STATS = [
   { value: "3 Roles", label: "Candidates, Recruiters & Admins" },
@@ -33,10 +34,19 @@ function AssessmentPreviewCard() {
         aria-hidden
         className="absolute -inset-4 -z-10 rounded-none bg-primary/5 sm:-inset-6"
       />
-      <div className="border bg-card shadow-sm">
+      <div
+        aria-hidden
+        className="absolute -top-10 -right-10 -z-10 size-40 rounded-full bg-primary/10 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="absolute -bottom-10 -left-10 -z-10 size-40 rounded-full bg-accent/20 blur-3xl"
+      />
+
+      <div className="animate-float border bg-card/90 shadow-lg shadow-primary/5 backdrop-blur-sm motion-reduce:animate-none">
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-primary" />
+            <span className="animate-soft-pulse size-2 rounded-full bg-primary" />
             <p className="text-xs font-medium text-foreground">
               Frontend Engineer Assessment
             </p>
@@ -48,10 +58,13 @@ function AssessmentPreviewCard() {
         </div>
 
         <div className="space-y-2 p-4">
-          {MOCK_QUESTIONS.map((question) => (
+          {MOCK_QUESTIONS.map((question, index) => (
             <div
               key={question.label}
-              className="flex items-center justify-between border px-3 py-2.5"
+              className="flex items-center justify-between border px-3 py-2.5 transition-colors hover:border-primary/30"
+              style={{
+                animationDelay: `${index * 120}ms`,
+              }}
             >
               <div className="flex items-center gap-2.5">
                 <span className="flex size-7 items-center justify-center bg-primary/10">
@@ -78,10 +91,11 @@ function AssessmentPreviewCard() {
         </div>
 
         <div className="flex items-center justify-between border-t bg-muted/30 px-4 py-3">
-          <p className="text-[11px] text-muted-foreground">
+          <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span className="animate-soft-pulse size-1.5 rounded-full bg-primary [animation-delay:-1s]" />
             Autosaved 4 seconds ago
           </p>
-          <span className="bg-foreground px-3 py-1.5 text-[11px] font-medium text-background">
+          <span className="bg-foreground px-3 py-1.5 text-[11px] font-medium text-background transition-colors hover:bg-primary">
             Submit attempt
           </span>
         </div>
@@ -94,76 +108,106 @@ export function LandingHero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24"
+      className="relative mx-auto max-w-6xl overflow-hidden px-4 py-16 sm:px-6 sm:py-24"
     >
+      <div
+        aria-hidden
+        className="landing-grid-bg absolute inset-0 -z-10 opacity-70"
+      />
+      <div
+        aria-hidden
+        className="landing-hero-glow absolute inset-x-0 -top-32 -z-10 h-80"
+      />
+
       <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-8">
-        {/* Copy column */}
         <div>
-          <Badge variant="outline" className="px-3 py-1 text-xs">
-            Online Assessment Platform
-          </Badge>
+          <Reveal>
+            <Badge variant="outline" className="gap-2 px-3 py-1 text-xs">
+              <span className="animate-soft-pulse size-1.5 rounded-full bg-primary" />
+              Online Assessment Platform
+            </Badge>
+          </Reveal>
 
-          <h1
-            id="hero-heading"
-            className="mt-6 font-heading text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl"
-          >
-            Hire smarter with{" "}
-            <span className="text-primary">structured assessments.</span>
-          </h1>
-
-          <p className="mt-6 max-w-xl text-sm text-muted-foreground sm:text-base">
-            AssessFlow is the complete platform for creating assessments,
-            inviting candidates, and evaluating results — all in one place.
-          </p>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href={ROUTES.register}
-              className={cn(buttonVariants({ size: "lg" }))}
+          <Reveal delay={80}>
+            <h1
+              id="hero-heading"
+              className="mt-6 font-heading text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl"
             >
-              Get started as Candidate
-            </Link>
-            <Link
-              href={ROUTES.registerRecruiter}
-              className={cn(
-                buttonVariants({
-                  variant: "outline",
-                  size: "lg",
-                }),
-              )}
-            >
-              Post assessments as Recruiter
-            </Link>
-          </div>
+              Hire smarter with{" "}
+              <span className="bg-gradient-to-r from-primary via-primary to-chart-2 bg-clip-text text-transparent">
+                structured assessments.
+              </span>
+            </h1>
+          </Reveal>
 
-          <p className="mt-5 text-xs text-muted-foreground">
-            Already have an account?{" "}
-            <Link
-              href={ROUTES.login}
-              className="font-medium text-foreground underline underline-offset-4 transition-colors hover:text-primary"
-            >
-              Sign in
-            </Link>
-          </p>
+          <Reveal delay={160}>
+            <p className="mt-6 max-w-xl text-sm text-muted-foreground sm:text-base">
+              AssessFlow is the complete platform for creating assessments,
+              inviting candidates, and evaluating results — all in one place.
+            </p>
+          </Reveal>
 
-          <div className="mt-14 grid grid-cols-3 divide-x divide-border rounded-none border">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="px-2 py-5 text-center">
-                <p className="font-heading text-lg font-semibold text-foreground sm:text-xl">
-                  {stat.value}
-                </p>
-                <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
+          <Reveal delay={240}>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href={ROUTES.register}
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20",
+                )}
+              >
+                Get started as Candidate
+              </Link>
+              <Link
+                href={ROUTES.registerRecruiter}
+                className={cn(
+                  buttonVariants({
+                    variant: "outline",
+                    size: "lg",
+                  }),
+                  "transition-all duration-300 hover:-translate-y-0.5 hover:bg-foreground hover:text-background",
+                )}
+              >
+                Post assessments as Recruiter
+              </Link>
+            </div>
+          </Reveal>
+
+          <Reveal delay={320}>
+            <p className="mt-5 text-xs text-muted-foreground">
+              Already have an account?{" "}
+              <Link
+                href={ROUTES.login}
+                className="font-medium text-foreground underline underline-offset-4 transition-colors hover:text-primary"
+              >
+                Sign in
+              </Link>
+            </p>
+          </Reveal>
+
+          <Reveal delay={400}>
+            <div className="mt-14 grid grid-cols-3 divide-x divide-border rounded-none border">
+              {STATS.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="px-2 py-5 text-center transition-colors hover:bg-muted/40"
+                >
+                  <p className="font-heading text-lg font-semibold text-foreground sm:text-xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
         {/* Decorative preview column */}
-        <div className="hidden lg:block">
+        <Reveal delay={200} className="hidden lg:block">
           <AssessmentPreviewCard />
-        </div>
+        </Reveal>
       </div>
     </section>
   );

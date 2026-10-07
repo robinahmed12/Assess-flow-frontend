@@ -1,4 +1,4 @@
-"use client" 
+"use client";
 import {
   BuildingsIcon,
   ChartLineUpIcon,
@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/src/shared/components/ui/card";
 import { Badge } from "@/src/shared/components/ui/badge";
+import { Reveal } from "./reveal";
 
 type Feature = {
   icon: Icon;
@@ -90,7 +91,7 @@ export function LandingFeatures() {
   return (
     <section id="features" aria-labelledby="features-heading" className="border-t bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="mb-12 text-center">
+        <Reveal className="mb-12 text-center">
           <h2
             id="features-heading"
             className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl"
@@ -100,60 +101,69 @@ export function LandingFeatures() {
           <p className="mt-3 text-sm text-muted-foreground">
             Purpose-built workflows for candidates, recruiters, and administrators.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid gap-6 sm:grid-cols-3">
-          {FEATURES.map((feature) => (
-            <Card
-              key={feature.label}
-              id={`feature-${feature.label.toLowerCase().replace(/\s+/g, "-")}`}
-            >
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-none bg-primary/10">
-                    <feature.icon className="size-4 text-primary" />
-                  </span>
-                  <p className="text-xs font-semibold tracking-widest text-primary uppercase">{feature.label}</p>
-                </div>
-                <CardTitle className="mt-3">{feature.title}</CardTitle>
-                <CardDescription>{feature.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2" aria-label={`${feature.label} highlights`}>
-                  {feature.points.map((point) => (
-                    <li key={point} className="flex items-start gap-2 text-xs text-muted-foreground">
-                      <span className="mt-0.5 shrink-0 font-semibold text-primary" aria-hidden="true">
-                        ✓
-                      </span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+          {FEATURES.map((feature, index) => (
+            <Reveal key={feature.label} delay={index * 120} className="h-full">
+              <Card
+                id={`feature-${feature.label.toLowerCase().replace(/\s+/g, "-")}`}
+                className="h-full transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:ring-primary/25"
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-none bg-primary/10 transition-colors duration-300 group-hover/card:bg-primary">
+                      <feature.icon className="size-4 text-primary transition-colors duration-300 group-hover/card:text-primary-foreground" />
+                    </span>
+                    <p className="text-xs font-semibold tracking-widest text-primary uppercase">{feature.label}</p>
+                  </div>
+                  <CardTitle className="mt-3">{feature.title}</CardTitle>
+                  <CardDescription>{feature.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2" aria-label={`${feature.label} highlights`}>
+                    {feature.points.map((point) => (
+                      <li key={point} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <span className="mt-0.5 shrink-0 font-semibold text-primary" aria-hidden="true">
+                          ✓
+                        </span>
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </Reveal>
           ))}
         </div>
 
         {/* How it works */}
-        <div id="how-it-works" className="mt-20">
-          <div className="mb-10 flex flex-col items-center gap-2 text-center">
+        <div id="how-it-works" className="mt-20 scroll-mt-24">
+          <Reveal className="mb-10 flex flex-col items-center gap-2 text-center">
             <Badge variant="outline" className="px-3 py-1 text-xs">
               How it works
             </Badge>
             <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               From registration to results
             </h3>
-          </div>
+          </Reveal>
 
-          <div className="grid gap-px overflow-hidden border bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {WORKFLOW_STEPS.map((item) => (
-              <div key={item.step} className="bg-background p-5">
-                <span className="font-heading text-2xl font-semibold text-primary/30">{item.step}</span>
-                <h4 className="mt-3 text-sm font-semibold text-foreground">{item.title}</h4>
-                <p className="mt-1.5 text-xs text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
-          </div>
+          <Reveal>
+            <div className="grid gap-px overflow-hidden border bg-border sm:grid-cols-2 lg:grid-cols-4">
+              {WORKFLOW_STEPS.map((item) => (
+                <div
+                  key={item.step}
+                  className="group bg-background p-5 transition-colors duration-300 hover:bg-primary/5"
+                >
+                  <span className="font-heading text-2xl font-semibold text-primary/30 transition-colors duration-300 group-hover:text-primary">
+                    {item.step}
+                  </span>
+                  <h4 className="mt-3 text-sm font-semibold text-foreground">{item.title}</h4>
+                  <p className="mt-1.5 text-xs text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
