@@ -1,5 +1,5 @@
 import { PageLoader } from "@/src/shared/components/global-loader";
 
 export default function Loading() {
-  return <PageLoader label="Loading recruiter registration..." />;
+  return <PageLoader label="Loading AssessFlow..." />;
 }

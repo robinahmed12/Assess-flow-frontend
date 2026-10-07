@@ -127,3 +127,19 @@
     @apply font-sans;
     }
 }
+/* Global route-change loader (RouteProgress) */
+@keyframes route-progress {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(360%);
+  }
+}
+
+.route-progress-bar {
+  width: 40%;
+  will-change: transform;
+  animation: route-progress 1.2s ease-in-out infinite;
+}

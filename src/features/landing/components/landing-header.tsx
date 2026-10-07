@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   CaretDownIcon,
   ChartLineUpIcon,
@@ -16,9 +15,8 @@ import {
 } from "@phosphor-icons/react";
 
 import { ROUTES } from "@/src/config/routes";
-import { useMe } from "@/src/features/auth/hooks";
+import { useLogout, useMe } from "@/src/features/auth/hooks";
 import {
-  AUTH_QUERY_KEYS,
   USER_ROLES,
   type AuthUser,
   type UserRole,
@@ -96,15 +94,8 @@ function getInitials(name: string) {
 /** Click-to-open user menu shown in the header once a session is present. */
 function UserMenu({ user }: { user: AuthUser }) {
   const [open, setOpen] = useState(false);
-  const queryClient = useQueryClient();
+  const handleSignOut = useLogout();
   const links = ROLE_LINKS[user.role] ?? [];
-
-  function handleSignOut() {
-    // No logout endpoint is defined yet (see SRS backend blockers), so this
-    // only clears the local session cache and sends the user back to login.
-    queryClient.removeQueries({ queryKey: AUTH_QUERY_KEYS.me });
-    window.location.assign(ROUTES.login);
-  }
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>

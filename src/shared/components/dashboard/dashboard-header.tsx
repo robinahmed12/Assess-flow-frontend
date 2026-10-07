@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 import { CaretDownIcon, ListIcon, SignOutIcon } from "@phosphor-icons/react";
 
-import { ROUTES } from "@/src/config/routes";
-import { useMe } from "@/src/features/auth/hooks";
-import { AUTH_QUERY_KEYS } from "@/src/features/auth/types";
+import { useLogout, useMe } from "@/src/features/auth/hooks";
 import { Avatar, AvatarFallback } from "@/src/shared/components/ui/avatar";
 import { Button } from "@/src/shared/components/ui/button";
 import {
@@ -41,14 +38,7 @@ function getInitials(name: string) {
 function UserMenu({ role }: { role: DashboardRole }) {
   const [open, setOpen] = useState(false);
   const meQuery = useMe();
-  const queryClient = useQueryClient();
-
-  function handleSignOut() {
-    // No logout endpoint is defined yet, so this only clears the local
-    // session cache and sends the user back to login.
-    queryClient.removeQueries({ queryKey: AUTH_QUERY_KEYS.me });
-    window.location.assign(ROUTES.login);
-  }
+  const handleSignOut = useLogout();
 
   if (meQuery.isLoading) {
     return (

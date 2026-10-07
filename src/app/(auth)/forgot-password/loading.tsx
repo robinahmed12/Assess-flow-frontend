@@ -1,3 +1,5 @@
+import { PageLoader } from "@/src/shared/components/global-loader";
+
 export default function Loading() {
-  return <div className="p-6 text-sm text-gray-600">Loading...</div>;
+  return <PageLoader label="Loading password reset..." />;
 }
