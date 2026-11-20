@@ -18,7 +18,6 @@ import { recruiterRegisterSchema, otpSchema } from "../../schemas";
 import type { VerifyRecruiterOtpRequestDto } from "../../types";
 import { useRegisterRecruiter, useVerifyRecruiterOtp } from "../../hooks";
 import { toast } from "sonner";
-import { GoogleLoginButton } from "../login/google-login-button";
 
 type RecruiterRegisterFormValues = {
   name: string;
@@ -628,11 +627,11 @@ export function RecruiterRegisterForm() {
         <Button
           type="submit"
           disabled={registerMutation.isPending}
-          className="h-10 w-full"
+          className="h-11 w-full rounded-xl bg-[#B8621B] font-bold text-white shadow-md shadow-[#B8621B]/20 transition-all hover:bg-[#9B5115] hover:shadow-lg"
         >
           {registerMutation.isPending
-            ? "Submitting..."
-            : "Create recruiter account"}
+            ? "Submitting application..."
+            : "Create Recruiter Account"}
         </Button>
        
       </form>

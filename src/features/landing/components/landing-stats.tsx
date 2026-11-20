@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
 import { Reveal } from "./reveal";
 
 const STATS = [
-  { value: 3, suffix: "", label: "Roles", description: "Candidate, recruiter & admin" },
-  { value: 3, suffix: "", label: "Question types", description: "MCQ, written & coding" },
-  { value: 2, suffix: "", label: "Evaluation modes", description: "Automatic + manual scoring" },
-  { value: 4, suffix: "", label: "Workflow steps", description: "Register → attempt → evaluate → results" },
+  { value: 100, suffix: "%", label: "Autosave Reliability", description: "Zero candidate progress lost" },
+  { value: 3, suffix: "", label: "Role Archetypes", description: "Candidate, Recruiter & Admin" },
+  { value: 3, suffix: "", label: "Assessment Formats", description: "MCQ, Written & Coding" },
+  { value: 2, suffix: "x", label: "Faster Grading", description: "Hybrid instant + rubric evaluation" },
 ] as const;
 
-const COUNT_DURATION_MS = 1100;
+const COUNT_DURATION_MS = 1200;
 
 function useCountUp(target: number, active: boolean) {
   const [value, setValue] = useState(0);
@@ -53,18 +52,22 @@ function StatItem({
   const value = useCountUp(stat.value, active);
 
   return (
-    <div className="px-4 py-8 text-center sm:py-10">
-      <p className="font-heading text-4xl font-semibold tracking-tight text-primary sm:text-5xl">
+    <div className="flex flex-col items-center px-4 py-10 text-center sm:py-12">
+      <p className="font-heading text-4xl font-extrabold tracking-tight text-[#B8621B] sm:text-5xl">
         {value}
         {stat.suffix}
       </p>
-      <p className="mt-2 text-sm font-medium text-foreground">{stat.label}</p>
-      <p className="mt-1 text-xs text-muted-foreground">{stat.description}</p>
+      <p className="mt-3 text-sm font-bold tracking-tight text-white sm:text-base">
+        {stat.label}
+      </p>
+      <p className="mt-1 max-w-[200px] text-xs leading-relaxed text-[#E3CCAE]/80">
+        {stat.description}
+      </p>
     </div>
   );
 }
 
-/** Animated band of headline numbers that count up when scrolled into view. */
+/** High-contrast dark banner with counters that animate upon viewport intersection. */
 export function LandingStats() {
   const ref = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(false);
@@ -88,20 +91,26 @@ export function LandingStats() {
   }, []);
 
   return (
-    <section aria-labelledby="stats-heading" className="relative overflow-hidden">
+    <section aria-labelledby="stats-heading" className="relative overflow-hidden bg-[#262A56] py-12 text-white">
+      {/* Background ambient lighting */}
       <div
         aria-hidden
-        className="animate-gradient-pan absolute inset-0 bg-gradient-to-r from-primary/5 via-background to-accent/10"
+        className="absolute top-0 right-1/4 -z-0 size-72 rounded-full bg-[#B8621B]/15 blur-3xl"
       />
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+      <div
+        aria-hidden
+        className="absolute bottom-0 left-1/4 -z-0 size-72 rounded-full bg-[#000000]/40 blur-3xl"
+      />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <h2 id="stats-heading" className="sr-only">
-          Platform at a glance
+          Platform performance metrics
         </h2>
 
         <Reveal>
           <div
             ref={ref}
-            className="grid divide-y divide-border border-x sm:grid-cols-2 sm:divide-x lg:grid-cols-4"
+            className="grid divide-y divide-white/10 rounded-2xl border border-white/10 bg-[#12142B]/80 shadow-2xl backdrop-blur-md sm:grid-cols-2 sm:divide-y-0 sm:divide-x lg:grid-cols-4"
           >
             {STATS.map((stat) => (
               <StatItem key={stat.label} stat={stat} active={active} />

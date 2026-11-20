@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { ChartLineUpIcon } from "@phosphor-icons/react";
@@ -10,57 +10,68 @@ const FOOTER_GROUPS = [
   {
     title: "Candidates",
     links: [
-      { label: "Register as candidate", href: ROUTES.register },
-      { label: "Sign in", href: ROUTES.login },
+      { label: "Create Candidate Account", href: ROUTES.register },
+      { label: "Candidate Sign in", href: ROUTES.login },
+      { label: "Available Assessments", href: ROUTES.candidateAssessments },
+      { label: "Attempt History", href: ROUTES.candidateAttempts },
     ],
   },
   {
     title: "Recruiters",
     links: [
-      { label: "Register your company", href: ROUTES.registerRecruiter },
-      { label: "Sign in", href: ROUTES.login },
+      { label: "Register Company", href: ROUTES.registerRecruiter },
+      { label: "Recruiter Dashboard", href: ROUTES.recruiterDashboard },
+      { label: "Problem Library", href: ROUTES.recruiterProblems },
+      { label: "Manage Assessments", href: ROUTES.recruiterAssessments },
     ],
   },
   {
-    title: "Account",
+    title: "Platform",
     links: [
-      { label: "Forgot password", href: ROUTES.forgotPassword },
-      { label: "Sign in", href: ROUTES.login },
+      { label: "Sign in to Account", href: ROUTES.login },
+      { label: "Password Recovery", href: ROUTES.forgotPassword },
+      { label: "Platform Overview", href: ROUTES.home },
+      { label: "Demo Access", href: ROUTES.login },
     ],
   },
 ] as const;
 
 export function LandingFooter() {
   return (
-    <footer className="border-t">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-10 sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {/* Brand */}
-          <div className="space-y-3">
-            <Link href={ROUTES.home} className="flex items-center gap-2">
-              <span className="flex size-6 items-center justify-center rounded-none bg-primary">
-                <ChartLineUpIcon className="size-3.5 text-primary-foreground" weight="bold" />
+    <footer className="border-t border-[#E6DCD0]/60 bg-[#12142B] text-white">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          {/* Brand & Status */}
+          <div className="space-y-4">
+            <Link href={ROUTES.home} className="flex items-center gap-2.5">
+              <span className="flex size-8 items-center justify-center rounded-lg bg-[#262A56] ring-1 ring-[#B8621B]/40">
+                <ChartLineUpIcon className="size-4.5 text-[#E3CCAE]" weight="bold" />
               </span>
-              <span className="font-heading text-sm font-semibold tracking-tight text-foreground">
-                AssessFlow
+              <span className="font-heading text-lg font-bold tracking-tight text-white">
+                Assess<span className="text-[#B8621B]">Flow</span>
               </span>
             </Link>
-            <p className="max-w-xs text-xs text-muted-foreground">
-              The complete platform for creating assessments, inviting candidates, and evaluating
-              results — all in one place.
+            <p className="max-w-xs text-xs leading-relaxed text-[#E3CCAE]/70">
+              The complete platform for creating assessments, inviting candidates, and evaluating results with continuous autosave and hybrid scoring.
             </p>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium text-[#E3CCAE]">
+              <span className="size-1.5 rounded-full bg-emerald-400" />
+              <span>All Systems Operational</span>
+            </div>
           </div>
 
-          {/* Grouped nav */}
+          {/* Grouped Navigation */}
           {FOOTER_GROUPS.map((group) => (
-            <nav key={group.title} aria-label={`${group.title} links`}>
-              <p className="text-xs font-semibold text-foreground">{group.title}</p>
-              <ul className="mt-3 space-y-2">
+            <nav key={group.title} aria-label={`${group.title} navigation`}>
+              <p className="text-xs font-bold tracking-wider text-[#E3CCAE] uppercase">
+                {group.title}
+              </p>
+              <ul className="mt-4 space-y-2.5">
                 {group.links.map((link) => (
                   <li key={`${group.title}-${link.label}`}>
                     <Link
                       href={link.href}
-                      className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                      className="text-xs text-white/70 transition-colors hover:text-[#B8621B]"
                     >
                       {link.label}
                     </Link>
@@ -71,13 +82,17 @@ export function LandingFooter() {
           ))}
         </div>
 
-        <Separator className="my-8" />
+        <Separator className="my-10 bg-white/10" />
 
-        <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} AssessFlow. All rights reserved.
+        <div className="flex flex-col items-start justify-between gap-4 text-xs text-white/50 sm:flex-row sm:items-center">
+          <p>
+            &copy; {new Date().getFullYear()} AssessFlow Inc. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">Online Assessment &amp; Recruitment Platform</p>
+          <p className="flex items-center gap-2 text-white/60">
+            <span>Powered by AssessFlow Engine</span>
+            <span>•</span>
+            <span className="text-[#E3CCAE]">Online Assessment &amp; Recruitment Platform</span>
+          </p>
         </div>
       </div>
     </footer>

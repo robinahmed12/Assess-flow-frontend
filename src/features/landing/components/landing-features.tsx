@@ -1,11 +1,14 @@
 "use client";
+
 import {
   BuildingsIcon,
-  ChartLineUpIcon,
+  CheckCircleIcon,
+  LightningIcon,
+  ShieldCheckIcon,
   UsersIcon,
-  type Icon,
 } from "@phosphor-icons/react";
 
+import { Badge } from "@/src/shared/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -13,153 +16,215 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/shared/components/ui/card";
-import { Badge } from "@/src/shared/components/ui/badge";
 import { Reveal } from "./reveal";
 
-type Feature = {
-  icon: Icon;
-  label: string;
-  title: string;
-  description: string;
-  points: readonly string[];
-};
-
-const FEATURES: readonly Feature[] = [
-  {
-    icon: UsersIcon,
-    label: "For Candidates",
-    title: "Take assessments with confidence",
-    description:
-      "Receive invitations by email, answer MCQ, written, and coding questions at your own pace, and submit when ready. Your progress is autosaved so you can resume anytime.",
-    points: [
-      "MCQ, written & coding question types",
-      "Autosave — resume from where you left off",
-      "Results shown after recruiter evaluation",
-    ],
-  },
+const BENTO_FEATURES = [
   {
     icon: BuildingsIcon,
-    label: "For Recruiters",
-    title: "Build and manage assessments easily",
+    tag: "Problem Management",
+    title: "Company Problem Library with Full CRUD",
     description:
-      "Create a company problem library, build assessments from your problems, invite active candidates by email, and track every submission from a single view.",
+      "Curate your organization's own question bank. Reuse standardized problems across multiple hiring cycles without rewriting questions.",
     points: [
-      "Problem library with full CRUD",
-      "Draft → Publish → Archive lifecycle",
-      "Invite candidates with optional expiry",
+      "MCQ, open written text, and coding challenges",
+      "Draft, Publish, and Archive lifecycle control",
+      "Tagging and categorization by seniority",
     ],
+    className: "sm:col-span-2 lg:col-span-2",
+    accent: "navy",
   },
   {
-    icon: ChartLineUpIcon,
-    label: "Smart Evaluation",
-    title: "Accurate scoring, every time",
+    icon: LightningIcon,
+    tag: "Dual Evaluation",
+    title: "Hybrid Scoring Engine",
     description:
-      "MCQ answers are scored automatically on submission. Written and coding answers go through structured manual scoring. Finalize and notify candidates instantly.",
+      "Multiple-choice questions are auto-scored instantaneously on submission, leaving your evaluators to focus strictly on open-ended answers.",
     points: [
-      "Automatic MCQ scoring on submit",
-      "Per-answer manual scoring for open answers",
-      "Result email sent on finalization",
+      "Zero-latency auto-grading for MCQs",
+      "Structured rubric scoring for written & coding tasks",
+      "Instant email notifications on finalization",
     ],
+    className: "sm:col-span-1 lg:col-span-1",
+    accent: "amber",
   },
-];
+  {
+    icon: UsersIcon,
+    tag: "Candidate Experience",
+    title: "Continuous Autosave & Zero-Friction Attempts",
+    description:
+      "Candidates can focus on demonstrating their skills without worrying about network hiccups or accidental tab closures.",
+    points: [
+      "Real-time answer persistence to prevent data loss",
+      "Clean, distraction-free assessment environment",
+      "Clear countdown timers and submission status",
+    ],
+    className: "sm:col-span-1 lg:col-span-1",
+    accent: "amber",
+  },
+  {
+    icon: ShieldCheckIcon,
+    tag: "Security & Governance",
+    title: "Role-Based Integrity & Audit Logs",
+    description:
+      "Multi-tenant role boundaries for Candidates, Recruiters, and Admins with email OTP verification and audit trails.",
+    points: [
+      "One-time password (OTP) email authentication",
+      "Time-limited assessment invitation links",
+      "Full administrative oversight and audit logs",
+    ],
+    className: "sm:col-span-2 lg:col-span-2",
+    accent: "navy",
+  },
+] as const;
 
 const WORKFLOW_STEPS = [
   {
     step: "01",
-    title: "Register & verify",
-    description: "Create an account and confirm your email with a one-time code before you get started.",
+    title: "Register & Verify",
+    description:
+      "Create an account and confirm your identity with a one-time verification code.",
   },
   {
     step: "02",
-    title: "Build or receive an invite",
+    title: "Build & Invite",
     description:
-      "Recruiters build a problem library and publish assessments. Candidates accept invitations to active assessments.",
+      "Assemble assessments from your problem library and dispatch secure invitation tokens.",
   },
   {
     step: "03",
-    title: "Attempt & autosave",
-    description: "Candidates answer at their own pace — every response is autosaved as they go.",
+    title: "Attempt with Autosave",
+    description:
+      "Candidates complete MCQs, written answers, and code with real-time continuous autosave.",
   },
   {
     step: "04",
-    title: "Evaluate & review results",
-    description: "MCQs are scored instantly; written and coding answers are scored manually, then finalized.",
+    title: "Evaluate & Notify",
+    description:
+      "Auto-grade objective questions, review open questions, and release finalized scorecards.",
   },
 ] as const;
 
 export function LandingFeatures() {
   return (
-    <section id="features" aria-labelledby="features-heading" className="border-t bg-muted/30">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-        <Reveal className="mb-12 text-center">
+    <section id="features" aria-labelledby="features-heading" className="border-t border-[#E6DCD0] bg-white/40 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {/* Section Header */}
+        <Reveal className="mb-14 text-center">
+          <Badge
+            variant="outline"
+            className="border-[#E6DCD0] bg-[#FAF8F5] px-3.5 py-1 text-xs font-semibold text-[#B8621B]"
+          >
+            Platform Capabilities
+          </Badge>
           <h2
             id="features-heading"
-            className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl"
+            className="mt-4 font-heading text-3xl font-extrabold tracking-tight text-[#111322] sm:text-4xl"
           >
-            Everything you need to assess talent
+            Engineered for precision hiring
           </h2>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Purpose-built workflows for candidates, recruiters, and administrators.
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#5A5D70] sm:text-base">
+            Every layer of AssessFlow is designed to eliminate bias, accelerate
+            evaluation timelines, and offer a world-class assessment journey.
           </p>
         </Reveal>
 
-        <div className="grid gap-6 sm:grid-cols-3">
-          {FEATURES.map((feature, index) => (
-            <Reveal key={feature.label} delay={index * 120} className="h-full">
-              <Card
-                id={`feature-${feature.label.toLowerCase().replace(/\s+/g, "-")}`}
-                className="h-full transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:ring-primary/25"
-              >
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-none bg-primary/10 transition-colors duration-300 group-hover/card:bg-primary">
-                      <feature.icon className="size-4 text-primary transition-colors duration-300 group-hover/card:text-primary-foreground" />
-                    </span>
-                    <p className="text-xs font-semibold tracking-widest text-primary uppercase">{feature.label}</p>
-                  </div>
-                  <CardTitle className="mt-3">{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2" aria-label={`${feature.label} highlights`}>
-                    {feature.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2 text-xs text-muted-foreground">
-                        <span className="mt-0.5 shrink-0 font-semibold text-primary" aria-hidden="true">
-                          ✓
-                        </span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </Reveal>
-          ))}
+        {/* Bento Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {BENTO_FEATURES.map((feature, index) => {
+            const isAmber = feature.accent === "amber";
+            return (
+              <Reveal key={feature.title} delay={index * 100} className={feature.className}>
+                <Card className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#E6DCD0] bg-white p-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#B8621B]/50 hover:shadow-xl hover:shadow-[#262A56]/5">
+                  {/* Accent border strip on card top */}
+                  <div
+                    aria-hidden
+                    className={`h-1.5 w-full rounded-t-lg ${
+                      isAmber ? "bg-[#B8621B]" : "bg-[#262A56]"
+                    }`}
+                  />
+                  <CardHeader className="pt-5 pb-3">
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={`flex size-10 items-center justify-center rounded-xl ${
+                          isAmber ? "bg-[#B8621B]/10 text-[#B8621B]" : "bg-[#262A56] text-[#E3CCAE]"
+                        } shadow-sm transition-transform duration-300 group-hover:scale-110`}
+                      >
+                        <feature.icon className="size-5" weight="bold" />
+                      </span>
+                      <span className="rounded-full bg-[#FAF8F5] px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-[#5A5D70] uppercase">
+                        {feature.tag}
+                      </span>
+                    </div>
+
+                    <CardTitle className="mt-4 text-lg font-bold text-[#111322] sm:text-xl">
+                      {feature.title}
+                    </CardTitle>
+                    <CardDescription className="text-xs leading-relaxed text-[#5A5D70]">
+                      {feature.description}
+                    </CardDescription>
+                  </CardHeader>
+
+                  <CardContent className="mt-auto pt-2 pb-5">
+                    <ul className="space-y-2.5">
+                      {feature.points.map((point) => (
+                        <li key={point} className="flex items-start gap-2.5 text-xs font-medium text-[#111322]/80">
+                          <CheckCircleIcon
+                            className="mt-0.5 size-4 shrink-0 text-[#B8621B]"
+                            weight="fill"
+                          />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </Reveal>
+            );
+          })}
         </div>
 
-        {/* How it works */}
-        <div id="how-it-works" className="mt-20 scroll-mt-24">
-          <Reveal className="mb-10 flex flex-col items-center gap-2 text-center">
-            <Badge variant="outline" className="px-3 py-1 text-xs">
-              How it works
+        {/* How It Works Pipeline */}
+        <div id="how-it-works" className="mt-28 scroll-mt-24">
+          <Reveal className="mb-12 text-center">
+            <Badge
+              variant="outline"
+              className="border-[#E6DCD0] bg-[#FAF8F5] px-3.5 py-1 text-xs font-semibold text-[#262A56]"
+            >
+              How It Works
             </Badge>
-            <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-              From registration to results
+            <h3 className="mt-4 font-heading text-2xl font-bold tracking-tight text-[#111322] sm:text-3xl">
+              From registration to finalized scorecards
             </h3>
+            <p className="mt-2 text-xs text-[#5A5D70] sm:text-sm">
+              Four structured milestones ensuring an effortless hiring journey.
+            </p>
           </Reveal>
 
           <Reveal>
-            <div className="grid gap-px overflow-hidden border bg-border sm:grid-cols-2 lg:grid-cols-4">
-              {WORKFLOW_STEPS.map((item) => (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {WORKFLOW_STEPS.map((step, idx) => (
                 <div
-                  key={item.step}
-                  className="group bg-background p-5 transition-colors duration-300 hover:bg-primary/5"
+                  key={step.step}
+                  className="group relative rounded-xl border border-[#E6DCD0] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#B8621B]/40 hover:shadow-md"
                 >
-                  <span className="font-heading text-2xl font-semibold text-primary/30 transition-colors duration-300 group-hover:text-primary">
-                    {item.step}
-                  </span>
-                  <h4 className="mt-3 text-sm font-semibold text-foreground">{item.title}</h4>
-                  <p className="mt-1.5 text-xs text-muted-foreground">{item.description}</p>
+                  {/* Step badge */}
+                  <div className="flex items-center justify-between">
+                    <span className="flex size-10 items-center justify-center rounded-xl bg-[#262A56] font-heading text-sm font-bold text-[#E3CCAE] shadow-sm transition-colors group-hover:bg-[#B8621B] group-hover:text-white">
+                      {step.step}
+                    </span>
+                    {idx < WORKFLOW_STEPS.length - 1 ? (
+                      <span className="hidden font-mono text-xs text-[#B8621B] lg:inline">
+                        ➔
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <h4 className="mt-4 text-base font-bold text-[#111322]">
+                    {step.title}
+                  </h4>
+                  <p className="mt-2 text-xs leading-relaxed text-[#5A5D70]">
+                    {step.description}
+                  </p>
                 </div>
               ))}
             </div>
