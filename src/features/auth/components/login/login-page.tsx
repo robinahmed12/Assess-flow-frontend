@@ -139,7 +139,7 @@ export function LoginPage() {
       </section>
 
       {/* ================= RIGHT FORM PANEL: Fast-Track / Password ================= */}
-      <section className="flex flex-col justify-center bg-[#FAF8F5] px-4 py-12 sm:px-10 lg:px-14">
+      <section className="flex flex-col justify-center bg-[#FAF8F5] px-3.5 py-8 sm:px-10 sm:py-12 lg:px-14">
         <div className="mx-auto w-full max-w-md">
           {/* Mobile Header Brand link */}
           <div className="mb-6 flex items-center justify-between lg:hidden">
@@ -160,9 +160,9 @@ export function LoginPage() {
           </div>
 
           {/* Auth Card */}
-          <div className="rounded-2xl border border-[#E6DCD0] bg-white p-7 shadow-xl shadow-[#262A56]/5 sm:p-9">
+          <div className="rounded-2xl border border-[#E6DCD0] bg-white p-4.5 sm:p-8 shadow-xl shadow-[#262A56]/5">
             <div className="space-y-1.5">
-              <h2 className="font-heading text-2xl font-bold tracking-tight text-[#111322]">
+              <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-[#111322]">
                 Sign in to your account
               </h2>
               <p className="text-xs leading-relaxed text-[#5A5D70]">
@@ -172,38 +172,38 @@ export function LoginPage() {
 
             {/* Segmented Auth Mode Switcher */}
             {showDemo && (
-              <div className="mt-6 flex rounded-xl border border-[#E6DCD0] bg-[#FAF8F5] p-1 text-xs font-semibold">
+              <div className="mt-5 flex rounded-xl border border-[#E6DCD0] bg-[#FAF8F5] p-1 text-[11px] sm:text-xs font-semibold">
                 <button
                   type="button"
                   onClick={() => setAuthMode("demo")}
                   className={cn(
-                    "flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 transition-all",
+                    "flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-lg py-1.5 sm:py-2 transition-all",
                     authMode === "demo"
-                      ? "bg-[#262A56] font-bold text-white shadow-sm"
+                      ? "bg-[#262A56] font-bold text-white shadow-xs"
                       : "text-[#5A5D70] hover:text-[#111322]",
                   )}
                 >
-                  <SparkleIcon weight="fill" className="size-3.5 text-[#B8621B]" />
-                  <span>1-Click Demo Login</span>
+                  <SparkleIcon weight="fill" className="size-3 sm:size-3.5 text-[#B8621B]" />
+                  <span>1-Click Demo</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setAuthMode("password")}
                   className={cn(
-                    "flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 transition-all",
+                    "flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-lg py-1.5 sm:py-2 transition-all",
                     authMode === "password"
-                      ? "bg-[#B8621B] font-bold text-white shadow-sm"
+                      ? "bg-[#B8621B] font-bold text-white shadow-xs"
                       : "text-[#5A5D70] hover:text-[#111322]",
                   )}
                 >
-                  <KeyIcon weight="bold" className="size-3.5" />
+                  <KeyIcon weight="bold" className="size-3 sm:size-3.5" />
                   <span>Manual Password</span>
                 </button>
               </div>
             )}
 
             {/* Main Content: Demo or Password */}
-            <div className="mt-6">
+            <div className="mt-5 sm:mt-6">
               {authMode === "demo" && showDemo ? (
                 <DemoLoginPanel />
               ) : (
