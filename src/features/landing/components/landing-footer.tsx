@@ -8,6 +8,17 @@ import { Separator } from "@/src/shared/components/ui/separator";
 
 const FOOTER_GROUPS = [
   {
+    title: "Platform",
+    links: [
+      { label: "Home", href: ROUTES.home },
+      { label: "About Us", href: ROUTES.about },
+      { label: "Services", href: ROUTES.services },
+      { label: "Pricing", href: ROUTES.pricing },
+      { label: "Blog", href: ROUTES.blog },
+      { label: "Contact Sales", href: ROUTES.contact },
+    ],
+  },
+  {
     title: "Candidates",
     links: [
       { label: "Create Candidate Account", href: ROUTES.register },
@@ -23,15 +34,6 @@ const FOOTER_GROUPS = [
       { label: "Recruiter Dashboard", href: ROUTES.recruiterDashboard },
       { label: "Problem Library", href: ROUTES.recruiterProblems },
       { label: "Manage Assessments", href: ROUTES.recruiterAssessments },
-    ],
-  },
-  {
-    title: "Platform",
-    links: [
-      { label: "Sign in to Account", href: ROUTES.login },
-      { label: "Password Recovery", href: ROUTES.forgotPassword },
-      { label: "Platform Overview", href: ROUTES.home },
-      { label: "Demo Access", href: ROUTES.login },
     ],
   },
 ] as const;

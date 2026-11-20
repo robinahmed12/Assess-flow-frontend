@@ -40,11 +40,11 @@ export const DEMO_ACCOUNTS: readonly DemoAccount[] = [
  * development by default and hidden from production builds unless it is opted
  * into with `NEXT_PUBLIC_DEMO_LOGIN=true`.
  */
-export function isDemoLoginEnabled(): boolean {
-  const flag = process.env.NEXT_PUBLIC_DEMO_LOGIN;
+// export function isDemoLoginEnabled(): boolean {
+//   const flag = process.env.NEXT_PUBLIC_DEMO_LOGIN;
 
-  if (flag === "true") return true;
-  if (flag === "false") return false;
+//   if (flag === "true") return true;
+//   if (flag === "false") return false;
 
-  return process.env.NODE_ENV !== "production";
-}
+//   return process.env.NODE_ENV !== "production";
+// }

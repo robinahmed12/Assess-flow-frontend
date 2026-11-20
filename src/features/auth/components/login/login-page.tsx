@@ -16,13 +16,12 @@ import {
 import { ROUTES } from "@/src/config/routes";
 import { DemoLoginPanel } from "./demo-login-panel";
 import { LoginForm } from "./login-form";
-import { isDemoLoginEnabled } from "../../constants/demo-accounts";
 import { cn } from "@/src/shared/utils";
 
 type AuthMode = "demo" | "password";
 
 export function LoginPage() {
-  const showDemo = isDemoLoginEnabled();
+  const showDemo = true;
   const [authMode, setAuthMode] = useState<AuthMode>("demo");
 
   return (

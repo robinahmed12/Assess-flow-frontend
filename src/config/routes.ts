@@ -1,5 +1,10 @@
 export const ROUTES = {
   home: "/",
+  about: "/about",
+  services: "/services",
+  pricing: "/pricing",
+  blog: "/blog",
+  contact: "/contact",
   login: "/login",
   register: "/register",
   registerVerify: "/register/verify",
